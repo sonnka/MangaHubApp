@@ -49,6 +49,10 @@ class LoginPage : AppCompatActivity() {
                     call: Call<LoginResponse>,
                     response: Response<LoginResponse>
                 ) {
+                    Log.d("Tag", response.errorBody().toString())
+                    Log.d("Tag", response.headers().toString())
+                    Log.d("Tag", response.code().toString())
+                    Log.d("Tag", response.isSuccessful.toString())
                     val tokens = response.body()
                     if (tokens != null) {
                         val intent = Intent(activity, MainPage::class.java)

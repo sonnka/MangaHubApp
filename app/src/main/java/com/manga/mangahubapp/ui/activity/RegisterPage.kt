@@ -1,4 +1,4 @@
-package com.manga.mangahubapp.activity
+package com.manga.mangahubapp.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

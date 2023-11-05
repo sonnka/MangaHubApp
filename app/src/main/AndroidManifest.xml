@@ -26,6 +26,9 @@
         android:theme="@style/Theme.MangaHubApp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.ForgotPassword"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.LoginPage"
             android:exported="true">
             <intent-filter>
@@ -36,10 +39,10 @@
         </activity>
         <activity
             android:name=".ui.activity.RegisterPage"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".ui.activity.MainPage"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

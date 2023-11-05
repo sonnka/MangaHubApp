@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.manga.mangahubapp.R
 import com.manga.mangahubapp.model.LoginRequest
 import com.manga.mangahubapp.model.LoginResponse
-import com.manga.mangahubapp.model.UserRequest
 import com.manga.mangahubapp.network.ApiRepositoryImpl
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,7 +42,7 @@ class LoginPage : AppCompatActivity() {
 
     fun login(view: View) {
         val user = LoginRequest(username?.text.toString().trim(), password?.text.toString().trim())
-        
+
         apiRepository.login(
             user,
             object :
@@ -72,5 +71,11 @@ class LoginPage : AppCompatActivity() {
                         .show()
                 }
             })
+    }
+
+    fun forgotPassword(view: View) {
+        val intent = Intent(activity, ForgotPassword::class.java)
+        startActivity(intent)
+        activity.finish()
     }
 }

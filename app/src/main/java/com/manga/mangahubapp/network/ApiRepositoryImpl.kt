@@ -1,5 +1,6 @@
 package com.manga.mangahubapp.network
 
+import com.manga.mangahubapp.model.ForgotPasswordRequest
 import com.manga.mangahubapp.model.LoginRequest
 import com.manga.mangahubapp.model.LoginResponse
 import com.manga.mangahubapp.model.UserRequest
@@ -24,10 +25,12 @@ class ApiRepositoryImpl : ApiRepository {
         service.login(user).enqueue(callback)
     }
 
-    override fun register(
-        user: UserRequest, callback: Callback<Void>
-    ) {
+    override fun register(user: UserRequest, callback: Callback<Void>) {
         service.register(user).enqueue(callback)
+    }
+
+    override fun forgotPassword(email: ForgotPasswordRequest, callback: Callback<Void>) {
+        service.forgotPassword(email).enqueue(callback)
     }
 
 

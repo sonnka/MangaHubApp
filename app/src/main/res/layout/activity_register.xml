@@ -52,6 +52,7 @@
                     android:ems="10"
                     android:inputType="text"
                     android:maxEms="32"
+                    android:maxLength="32"
                     android:minEms="4" />
             </LinearLayout>
 
@@ -76,6 +77,7 @@
                     android:ems="10"
                     android:inputType="text"
                     android:maxEms="50"
+                    android:maxLength="50"
                     android:minEms="4" />
             </LinearLayout>
 
@@ -99,6 +101,7 @@
                     android:ems="10"
                     android:inputType="text"
                     android:maxEms="50"
+                    android:maxLength="50"
                     android:minEms="4" />
             </LinearLayout>
 
@@ -259,6 +262,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
+        android:onClick="register"
         android:text="Sign up" />
 
 

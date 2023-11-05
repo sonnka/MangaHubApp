@@ -11,7 +11,7 @@ class ApiRepositoryImpl : ApiRepository {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://4b60-46-98-183-225.ngrok-free.app/")
+        .baseUrl("https://56d7-46-98-183-225.ngrok-free.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
@@ -23,11 +23,28 @@ class ApiRepositoryImpl : ApiRepository {
         service.login(loginData).enqueue(callback)
     }
 
-//    fun register(username: String, email: String, password: String, callback: Callback<User>) {
-//        val registrationData =
-//            mapOf("username" to username, "email" to email, "password" to password)
-//        service.register(registrationData).enqueue(callback)
-//    }
+    override fun register(
+        login: String, password: String, email: String, firstName: String,
+        lastName: String, avatar: String, description: String, phoneNumber: String,
+        showConfidentialInformation: String, birthDate: String, callback: Callback<Void>
+    ) {
+        val registrationData =
+            mapOf(
+                "login" to login,
+                "password" to password,
+                "email" to email,
+                "firstName" to firstName,
+                "lastName" to lastName,
+                "avatar" to avatar,
+                "description" to description,
+                "phoneNumber" to phoneNumber,
+                "showConfidentialInformation" to showConfidentialInformation,
+                "birthDate" to birthDate
+            )
+        service.register(registrationData).enqueue(callback)
+    }
+
+
 //
 //    fun fetchDataFromUrl(url: String, callback: Callback<Any>) {
 //        service.fetchData(url).enqueue(callback)

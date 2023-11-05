@@ -12,8 +12,8 @@ interface ApiService {
     @POST("api/Auth/login")
     fun login(@Body loginData: Map<String, String>): Call<LoginResponse>
 
-//    @POST("/register")
-//    fun register(@Body registrationData: Map<String, String>): Call<User>
+    @POST("/api/User/register")
+    fun register(@Body registrationData: Map<String, String>): Call<Void>
 //
 //    @GET
 //    fun fetchData(@Url url: String): Call<Any>

@@ -4,8 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.manga.mangahubapp.R
@@ -44,12 +45,12 @@ class LoginPage : AppCompatActivity() {
         passwordContainer = findViewById<TextInputLayout>(R.id.passwordContainer)
 
         username?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+            u.doOnTextChanged { _, _, _, _ ->
                 usernameContainer?.let { c -> c.helperText = validateUsername() }
             }
         }
         password?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+            u.doOnTextChanged { _, _, _, _ ->
                 passwordContainer?.let { c -> c.helperText = validatePassword() }
             }
         }
@@ -96,18 +97,39 @@ class LoginPage : AppCompatActivity() {
                             startActivity(intent)
                             activity.finish()
                         } else {
-                            Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG)
+                            AlertDialog.Builder(activity)
+                                .setTitle("Sing in")
+                                .setMessage("Something went wrong. Try again later.")
+                                .setPositiveButton("Okay") { _, _ ->
+                                    val intent = Intent(activity, LoginPage::class.java)
+                                    startActivity(intent)
+                                    activity.finish()
+                                }
                                 .show()
                         }
                     } else {
-                        Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG)
+                        AlertDialog.Builder(activity)
+                            .setTitle("Sing in")
+                            .setMessage("Something went wrong. Try again later.")
+                            .setPositiveButton("Okay") { _, _ ->
+                                val intent = Intent(activity, LoginPage::class.java)
+                                startActivity(intent)
+                                activity.finish()
+                            }
                             .show()
                     }
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Log.d("Error", t.message.toString())
-                    Toast.makeText(activity, "Server error : " + t.message, Toast.LENGTH_LONG)
+                    AlertDialog.Builder(activity)
+                        .setTitle("Sing in")
+                        .setMessage("Something went wrong. Try again later.")
+                        .setPositiveButton("Okay") { _, _ ->
+                            val intent = Intent(activity, LoginPage::class.java)
+                            startActivity(intent)
+                            activity.finish()
+                        }
                         .show()
                 }
             })

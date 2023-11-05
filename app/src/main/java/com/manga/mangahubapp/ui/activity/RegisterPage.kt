@@ -8,8 +8,9 @@ import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.manga.mangahubapp.R
@@ -91,42 +92,42 @@ class RegisterPage : AppCompatActivity() {
 
     private fun validate() {
         loginInput?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+            u.doOnTextChanged { _, _, _, _ ->
                 loginContainer?.let { c -> c.helperText = validateUsername() }
             }
         }
         passwordInput?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+            u.doOnTextChanged { _, _, _, _ ->
                 passwordContainer?.let { c -> c.helperText = validatePassword() }
             }
         }
         firstNameInput?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+            u.doOnTextChanged { _, _, _, _ ->
                 firstNameContainer?.let { c -> c.helperText = validateFirstName() }
             }
         }
-        lastNameContainer?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+        lastNameInput?.let { u ->
+            u.doOnTextChanged { _, _, _, _ ->
                 lastNameContainer?.let { c -> c.helperText = validateLastName() }
             }
         }
         descriptionInput?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+            u.doOnTextChanged { _, _, _, _ ->
                 descriptionContainer?.let { c -> c.helperText = validateDescription() }
             }
         }
         phoneNumber?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+            u.doOnTextChanged { _, _, _, _ ->
                 phoneContainer?.let { c -> c.helperText = validatePhone() }
             }
         }
         birthDateInput?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+            u.doOnTextChanged { _, _, _, _ ->
                 birthDateContainer?.let { c -> c.helperText = validateDate() }
             }
         }
         emailInput?.let { u ->
-            u.setOnFocusChangeListener { _, _ ->
+            u.doOnTextChanged { _, _, _, _ ->
                 emailContainer?.let { c -> c.helperText = validateEmail() }
             }
         }
@@ -179,8 +180,14 @@ class RegisterPage : AppCompatActivity() {
                 if (day.length < 2) {
                     day = "0$day";
                 }
+
+                var month = (monthOfYear + 1).toString()
+                if (month.length < 2) {
+                    month = "0$month";
+                }
+
                 birthDateInput?.setText(
-                    day + "/" + (monthOfYear + 1) + "/" + year
+                    "$day/$month/$year"
                 )
             }, mYear, mMonth, mDay
         )
@@ -241,19 +248,39 @@ class RegisterPage : AppCompatActivity() {
                         response: Response<Void>
                     ) {
                         if (!response.isSuccessful) {
-                            Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG)
+                            AlertDialog.Builder(activity)
+                                .setTitle("Sing up")
+                                .setMessage("Something went wrong. Try again later.")
+                                .setPositiveButton("Okay") { _, _ ->
+                                    val intent = Intent(activity, LoginPage::class.java)
+                                    startActivity(intent)
+                                    activity.finish()
+                                }
                                 .show()
                         } else {
-                            val intent = Intent(activity, LoginPage::class.java)
-                            startActivity(intent)
-                            activity.finish()
+                            AlertDialog.Builder(activity)
+                                .setTitle("Sign up")
+                                .setMessage("Registration was successful. You can try to log into your account.")
+                                .setPositiveButton("Okay") { _, _ ->
+                                    val intent = Intent(activity, LoginPage::class.java)
+                                    startActivity(intent)
+                                    activity.finish()
+                                }
+                                .show()
                         }
 
                     }
 
                     override fun onFailure(call: Call<Void>, t: Throwable) {
                         Log.d("Error", t.message.toString())
-                        Toast.makeText(activity, "Server error : " + t.message, Toast.LENGTH_LONG)
+                        AlertDialog.Builder(activity)
+                            .setTitle("Sing up")
+                            .setMessage("Something went wrong. Try again later.")
+                            .setPositiveButton("Okay") { _, _ ->
+                                val intent = Intent(activity, LoginPage::class.java)
+                                startActivity(intent)
+                                activity.finish()
+                            }
                             .show()
                     }
                 })

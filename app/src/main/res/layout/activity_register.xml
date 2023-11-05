@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".ui.activity.RegisterPage">
 
@@ -13,9 +14,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="35dp"
-        android:text="Registration"
+        android:fontFamily="@font/alata"
+        android:text="Sign Up"
         android:textAlignment="center"
-        android:textSize="24dp" />
+        android:textColor="#000000"
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
 
     <LinearLayout
@@ -49,9 +53,13 @@
                     android:id="@+id/loginEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/alata"
                     android:hint="Username"
                     android:inputType="text"
-                    android:lines="1" />
+                    android:lines="1"
+                    android:textColor="#000000"
+                    android:textColorHint="#555555"
+                    android:textSize="17dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -71,9 +79,13 @@
                     android:id="@+id/firstNameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/alata"
                     android:hint="First name"
                     android:inputType="text"
-                    android:lines="1" />
+                    android:lines="1"
+                    android:textColor="#000000"
+                    android:textColorHint="#555555"
+                    android:textSize="17dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -93,9 +105,13 @@
                     android:id="@+id/lastNameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/alata"
                     android:hint="Last name"
                     android:inputType="text"
-                    android:lines="1" />
+                    android:lines="1"
+                    android:textColor="#000000"
+                    android:textColorHint="#555555"
+                    android:textSize="17dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -104,6 +120,8 @@
             android:id="@+id/cvStories"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:layout_marginTop="35dp"
+            android:background="#FFFFFF"
             app:cardCornerRadius="70dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -114,9 +132,10 @@
                 android:id="@+id/avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/image_avatar" />
+                android:src="@drawable/image_avatar"
+                android:textColor="#000000"
+                android:textColorHint="#555555" />
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
@@ -141,10 +160,14 @@
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fontFamily="@font/alata"
             android:hint="Password"
             android:inputType="textPassword"
             android:lines="1"
-            android:maxLength="32" />
+            android:maxLength="32"
+            android:textColor="#000000"
+            android:textColorHint="#555555"
+            android:textSize="17dp" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -166,9 +189,13 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fontFamily="@font/alata"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:lines="1" />
+            android:lines="1"
+            android:textColor="#000000"
+            android:textColorHint="#555555"
+            android:textSize="17dp" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -192,10 +219,14 @@
             android:layout_height="match_parent"
             android:autofillHints="phone"
             android:digits="0123456789+"
+            android:fontFamily="@font/alata"
             android:hint="Phone number"
             android:inputType="phone"
             android:lines="1"
-            android:maxLength="13" />
+            android:maxLength="13"
+            android:textColor="#000000"
+            android:textColorHint="#555555"
+            android:textSize="17dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -216,9 +247,13 @@
             android:id="@+id/descriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fontFamily="@font/alata"
             android:hint="Description"
             android:inputType="text"
-            android:lines="3" />
+            android:lines="3"
+            android:textColor="#000000"
+            android:textColorHint="#555555"
+            android:textSize="17dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -240,11 +275,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="false"
+            android:fontFamily="@font/alata"
             android:hint="Date of birth"
             android:inputType="none"
             android:lines="1"
             android:onClick="onDate"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="#555555"
+            android:textSize="17dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -252,10 +291,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="45dp"
+        android:backgroundTint="#44E122"
+        android:fontFamily="@font/alata"
         android:onClick="register"
         android:text="Sign up"
-        android:textSize="20dp" />
+        android:textColor="@color/black"
+        android:textSize="22dp" />
 
 
 </LinearLayout>

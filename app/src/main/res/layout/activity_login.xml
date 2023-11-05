@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".ui.activity.LoginPage">
 
@@ -14,8 +15,10 @@
         android:layout_gravity="right"
         android:layout_marginTop="45dp"
         android:layout_marginRight="35dp"
+        android:fontFamily="@font/alata"
         android:onClick="registration"
         android:text="Sign up"
+        android:textColor="#5C5C5C"
         android:textSize="18dp" />
 
     <TextView
@@ -23,9 +26,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="95dp"
+        android:layout_marginTop="85dp"
+        android:fontFamily="@font/alata"
         android:text="Sign in"
-        android:textSize="24dp"
+        android:textColor="#000000"
+        android:textSize="30dp"
         android:textStyle="bold" />
 
 
@@ -46,9 +51,13 @@
             android:id="@+id/loginEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fontFamily="@font/alata"
             android:hint="Username"
             android:inputType="text"
-            android:lines="1" />
+            android:lines="1"
+            android:textColor="#000000"
+            android:textColorHint="#555555"
+            android:textSize="17dp" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -74,10 +83,14 @@
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fontFamily="@font/alata"
             android:hint="Password"
             android:inputType="textPassword"
             android:lines="1"
-            android:maxLength="32" />
+            android:maxLength="32"
+            android:textColor="#000000"
+            android:textColorHint="#555555"
+            android:textSize="17dp" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -87,8 +100,9 @@
         android:id="@+id/textForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/alata"
         android:onClick="forgotPassword"
         android:text="Forgot password?"
         android:textColor="#8A8A8A"
@@ -101,7 +115,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="75dp"
+        android:backgroundTint="#44E122"
+        android:fontFamily="@font/alata"
         android:onClick="login"
         android:text="Sign in"
-        android:textSize="18dp" />
+        android:textColor="@color/black"
+        android:textSize="22dp" />
 </LinearLayout>

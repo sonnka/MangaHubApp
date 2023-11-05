@@ -1,6 +1,8 @@
 package com.manga.mangahubapp.network
 
+import com.manga.mangahubapp.model.LoginRequest
 import com.manga.mangahubapp.model.LoginResponse
+import com.manga.mangahubapp.model.UserRequest
 import okhttp3.OkHttpClient
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -18,30 +20,14 @@ class ApiRepositoryImpl : ApiRepository {
 
     private val service = retrofit.create(ApiService::class.java)
 
-    override fun login(username: String, password: String, callback: Callback<LoginResponse>) {
-        val loginData = mapOf("login" to username, "password" to password)
-        service.login(loginData).enqueue(callback)
+    override fun login(user: LoginRequest, callback: Callback<LoginResponse>) {
+        service.login(user).enqueue(callback)
     }
 
     override fun register(
-        login: String, password: String, email: String, firstName: String,
-        lastName: String, avatar: String, description: String, phoneNumber: String,
-        showConfidentialInformation: String, birthDate: String, callback: Callback<Void>
+        user: UserRequest, callback: Callback<Void>
     ) {
-        val registrationData =
-            mapOf(
-                "login" to login,
-                "password" to password,
-                "email" to email,
-                "firstName" to firstName,
-                "lastName" to lastName,
-                "avatar" to avatar,
-                "description" to description,
-                "phoneNumber" to phoneNumber,
-                "showConfidentialInformation" to showConfidentialInformation,
-                "birthDate" to birthDate
-            )
-        service.register(registrationData).enqueue(callback)
+        service.register(user).enqueue(callback)
     }
 
 

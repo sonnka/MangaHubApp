@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.manga.mangahubapp.R
+import com.manga.mangahubapp.model.UserRequest
 import com.manga.mangahubapp.network.ApiRepositoryImpl
 import com.manga.mangahubapp.util.Validator
 import retrofit2.Call
@@ -123,17 +124,15 @@ class RegisterPage : AppCompatActivity() {
 
         validate()
 
-        Log.d("password", password!!)
-        Log.d("email", email!!)
-        Log.d("firstName", firstName!!)
-        Log.d("lastName", lastName!!)
-        Log.d("description", description!!)
-        Log.d("phone", phone!!)
-        Log.d("birthDate", birthDate!!)
 
+        val user = UserRequest(
+            login!!, password!!, email!!, firstName!!, lastName!!,
+            description!!, phone!!, birthDate!!, "", true
+        )
 
-        apiRepository.register(login!!, password!!, email!!, firstName!!, lastName!!, "",
-            description!!, phone!!, "true", birthDate!!,
+        Log.d("User", user.toString())
+
+        apiRepository.register(user,
             object :
                 Callback<Void> {
                 override fun onResponse(

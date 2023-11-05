@@ -1,13 +1,11 @@
 package com.manga.mangahubapp.network
 
+import com.manga.mangahubapp.model.LoginRequest
 import com.manga.mangahubapp.model.LoginResponse
+import com.manga.mangahubapp.model.UserRequest
 import retrofit2.Callback
 
 interface ApiRepository {
-    fun login(username: String, password: String, callback: Callback<LoginResponse>)
-    fun register(
-        login: String, password: String, email: String, firstName: String,
-        lastName: String, avatar: String, description: String, phoneNumber: String,
-        showConfidentialInformation: String, birthDate: String, callback: Callback<Void>
-    )
+    fun login(user: LoginRequest, callback: Callback<LoginResponse>)
+    fun register(user: UserRequest, callback: Callback<Void>)
 }

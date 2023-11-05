@@ -8,7 +8,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.manga.mangahubapp.R
+import com.manga.mangahubapp.model.LoginRequest
 import com.manga.mangahubapp.model.LoginResponse
+import com.manga.mangahubapp.model.UserRequest
 import com.manga.mangahubapp.network.ApiRepositoryImpl
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,9 +42,10 @@ class LoginPage : AppCompatActivity() {
     }
 
     fun login(view: View) {
+        val user = LoginRequest(username?.text.toString().trim(), password?.text.toString().trim())
+        
         apiRepository.login(
-            username?.text.toString().trim(),
-            password?.text.toString().trim(),
+            user,
             object :
                 Callback<LoginResponse> {
                 override fun onResponse(

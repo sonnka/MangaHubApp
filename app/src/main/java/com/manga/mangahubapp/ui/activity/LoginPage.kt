@@ -4,13 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.manga.mangahubapp.R
 import com.manga.mangahubapp.model.LoginRequest
 import com.manga.mangahubapp.model.LoginResponse
 import com.manga.mangahubapp.network.ApiRepositoryImpl
+import com.manga.mangahubapp.util.Validator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,18 +22,37 @@ class LoginPage : AppCompatActivity() {
 
     private val activity: AppCompatActivity = this@LoginPage
     private val apiRepository = ApiRepositoryImpl()
-    private var username: EditText? = null
-    private var password: EditText? = null
+    private val validator = Validator()
+    private var username: TextInputEditText? = null
+    private var password: TextInputEditText? = null
+    private var usernameContainer: TextInputLayout? = null
+    private var passwordContainer: TextInputLayout? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        Thread.sleep(3_000)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        init();
+        init()
     }
 
+
     private fun init() {
-        username = findViewById<EditText>(R.id.loginInput)
-        password = findViewById<EditText>(R.id.passwordInput)
+        username = findViewById<TextInputEditText>(R.id.loginEditText)
+        password = findViewById<TextInputEditText>(R.id.passwordEditText)
+
+        usernameContainer = findViewById<TextInputLayout>(R.id.loginContainer)
+        passwordContainer = findViewById<TextInputLayout>(R.id.passwordContainer)
+
+        username?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                usernameContainer?.let { c -> c.helperText = validateUsername() }
+            }
+        }
+        password?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                passwordContainer?.let { c -> c.helperText = validatePassword() }
+            }
+        }
     }
 
     fun registration(view: View) {
@@ -40,7 +61,29 @@ class LoginPage : AppCompatActivity() {
         activity.finish()
     }
 
+    fun forgotPassword(view: View) {
+        val intent = Intent(activity, ForgotPassword::class.java)
+        startActivity(intent)
+        activity.finish()
+    }
+
+
+    private fun validateUsername(): String {
+        return validator.validateLogin(username?.text.toString().trim())
+    }
+
+    private fun validatePassword(): String {
+        val passwordVal = validator.validatePassword(password?.text.toString().trim())
+        return if (passwordVal == null) {
+            "Invalid password"
+        } else {
+            ""
+        }
+    }
+
+
     fun login(view: View) {
+
         val user = LoginRequest(username?.text.toString().trim(), password?.text.toString().trim())
 
         apiRepository.login(
@@ -51,17 +94,19 @@ class LoginPage : AppCompatActivity() {
                     call: Call<LoginResponse>,
                     response: Response<LoginResponse>
                 ) {
-                    Log.d("Tag", response.errorBody().toString())
-                    Log.d("Tag", response.headers().toString())
-                    Log.d("Tag", response.code().toString())
-                    Log.d("Tag", response.isSuccessful.toString())
-                    val tokens = response.body()
-                    if (tokens != null) {
-                        val intent = Intent(activity, MainPage::class.java)
-                        startActivity(intent)
-                        activity.finish()
+                    if (response.isSuccessful) {
+                        val tokens = response.body()
+                        if (tokens != null) {
+                            val intent = Intent(activity, MainPage::class.java)
+                            startActivity(intent)
+                            activity.finish()
+                        } else {
+                            Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG)
+                                .show()
+                        }
                     } else {
-                        Toast.makeText(activity, "Tokens are null!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
 
@@ -73,9 +118,4 @@ class LoginPage : AppCompatActivity() {
             })
     }
 
-    fun forgotPassword(view: View) {
-        val intent = Intent(activity, ForgotPassword::class.java)
-        startActivity(intent)
-        activity.finish()
-    }
 }

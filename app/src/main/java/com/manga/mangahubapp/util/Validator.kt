@@ -25,36 +25,42 @@ class Validator {
         return null
     }
 
-    fun validateEmail(email: String): String? {
+    fun validateEmail(email: String): String {
         email.trim()
         val pattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
         val isMatch = Regex(pattern).matches(email)
         return if (isMatch) {
-            email
+            ""
         } else {
-            null
+            "Invalid email"
         }
     }
 
-    fun validateLogin(login: String): String? {
+    fun validateLogin(login: String): String {
         login.trim()
+        if (login == "") {
+            return "Required"
+        }
         val pattern = "^[a-zA-Z0-9_-]{4,32}\$"
         val isMatch = Regex(pattern).matches(login)
         return if (isMatch) {
-            login
+            ""
         } else {
-            null
+            "Invalid username"
         }
     }
 
-    fun validatePassword(email: String): String? {
-        email.trim()
+    fun validatePassword(password: String): String {
+        password.trim()
+        if (password == "") {
+            return "Required"
+        }
         val pattern = "^[a-zA-Z0-9!@#\$%^&*-_]{4,32}\$"
-        val isMatch = Regex(pattern).matches(email)
+        val isMatch = Regex(pattern).matches(password)
         return if (isMatch) {
-            email
+            ""
         } else {
-            null
+            "Invalid password"
         }
     }
 

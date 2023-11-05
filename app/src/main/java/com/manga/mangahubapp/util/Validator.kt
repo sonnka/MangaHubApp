@@ -1,6 +1,5 @@
 package com.manga.mangahubapp.util
 
-import android.util.Log
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -8,25 +7,65 @@ import java.time.format.DateTimeFormatter
 
 class Validator {
 
-    fun validatePhoneNumber(phoneNumber: String): String? {
-        try {
-            val phone = phoneNumber.trim().replace("\\s".toRegex(), "")
-            val pattern = "^[+]?[0-9]{12}$"
-            Log.d("Phone", phone)
-            val isMatch = Regex(pattern).matches(phone)
-            return if (isMatch) {
-                phone
-            } else {
-                null
-            }
+    fun formatPhoneNumber(phoneNumber: String): String? {
+        return try {
+            phoneNumber.trim().replace("\\s".toRegex(), "")
         } catch (e: Exception) {
-            Log.d("Error", e.message.toString())
+            null
         }
-        return null
+    }
+
+    fun formatDate(date: String): String? {
+        try {
+            date.trim()
+            val inputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+            val localDate = LocalDate.parse(date, inputFormat)
+
+            val currentTime = ZonedDateTime.now(ZoneId.of("UTC"))
+
+            val combinedDateTime =
+                ZonedDateTime.of(localDate, currentTime.toLocalTime(), ZoneId.of("UTC"))
+
+            val outputFormat = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+
+            return combinedDateTime.format(outputFormat)
+        } catch (e: Exception) {
+            return null
+        }
+    }
+
+    fun validatePhone(phoneNumber: String): String {
+        val phone = formatPhoneNumber(phoneNumber) ?: return "Invalid phone number"
+        if (phone == "") {
+            return "Required"
+        }
+        val pattern = "^[+]?[0-9]{12}$"
+        val isMatch = Regex(pattern).matches(phone)
+        return if (isMatch) {
+            ""
+        } else {
+            "Invalid phone number"
+        }
+    }
+
+    fun validateDate(dateBirth: String): String {
+        val date = formatDate(dateBirth) ?: return "Invalid date of birth"
+        return if (date == "") {
+            "Required"
+        } else {
+            ""
+        }
     }
 
     fun validateEmail(email: String): String {
         email.trim()
+        if (email == "") {
+            return "Required"
+        }
+        if (email.length < 5) {
+            return "Invalid email"
+        }
         val pattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
         val isMatch = Regex(pattern).matches(email)
         return if (isMatch) {
@@ -64,19 +103,36 @@ class Validator {
         }
     }
 
-    fun validateDate(date: String): String? {
-        date.trim()
-        val inputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    fun validateFirstName(firstName: String): String {
+        firstName.trim()
+        return if (firstName == "") {
+            "Required"
+        } else if (firstName.length < 4 || firstName.length > 50) {
+            "Invalid first name"
+        } else {
+            ""
+        }
+    }
 
-        val localDate = LocalDate.parse(date, inputFormat)
+    fun validateLastName(lastName: String): String {
+        lastName.trim()
+        return if (lastName == "") {
+            "Required"
+        } else if (lastName.length < 4 || lastName.length > 50) {
+            "Invalid last name"
+        } else {
+            ""
+        }
+    }
 
-        val currentTime = ZonedDateTime.now(ZoneId.of("UTC"))
-
-        val combinedDateTime =
-            ZonedDateTime.of(localDate, currentTime.toLocalTime(), ZoneId.of("UTC"))
-
-        val outputFormat = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-
-        return combinedDateTime.format(outputFormat)
+    fun validateDescription(description: String): String {
+        description.trim()
+        return if (description == "") {
+            "Required"
+        } else if (description.length < 15 || description.length > 500) {
+            "Invalid description"
+        } else {
+            ""
+        }
     }
 }

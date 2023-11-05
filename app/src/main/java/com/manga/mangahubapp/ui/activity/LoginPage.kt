@@ -73,12 +73,7 @@ class LoginPage : AppCompatActivity() {
     }
 
     private fun validatePassword(): String {
-        val passwordVal = validator.validatePassword(password?.text.toString().trim())
-        return if (passwordVal == null) {
-            "Invalid password"
-        } else {
-            ""
-        }
+        return validator.validatePassword(password?.text.toString().trim())
     }
 
 
@@ -111,7 +106,7 @@ class LoginPage : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Log.d("Tag", t.message.toString())
+                    Log.d("Error", t.message.toString())
                     Toast.makeText(activity, "Server error : " + t.message, Toast.LENGTH_LONG)
                         .show()
                 }

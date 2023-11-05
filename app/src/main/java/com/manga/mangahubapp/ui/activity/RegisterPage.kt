@@ -7,10 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.DatePicker
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.manga.mangahubapp.R
 import com.manga.mangahubapp.model.UserRequest
 import com.manga.mangahubapp.network.ApiRepositoryImpl
@@ -28,24 +29,24 @@ class RegisterPage : AppCompatActivity() {
     private val activity: AppCompatActivity = this@RegisterPage
     private val apiRepository = ApiRepositoryImpl()
     private val validator = Validator()
-    private var loginInput: EditText? = null
-    private var passwordInput: EditText? = null
-    private var firstNameInput: EditText? = null
-    private var lastNameInput: EditText? = null
+    private var loginInput: TextInputEditText? = null
+    private var passwordInput: TextInputEditText? = null
+    private var firstNameInput: TextInputEditText? = null
+    private var lastNameInput: TextInputEditText? = null
     private var avatar: ImageView? = null
-    private var descriptionInput: EditText? = null
-    private var phoneNumber: EditText? = null
+    private var descriptionInput: TextInputEditText? = null
+    private var phoneNumber: TextInputEditText? = null
     private var datePickerDialog: DatePickerDialog? = null
-    private var birthDateInput: EditText? = null
-    private var emailInput: EditText? = null
-    private var login: String? = null
-    private var password: String? = null
-    private var firstName: String? = null
-    private var lastName: String? = null
-    private var description: String? = null
-    private var phone: String? = null
-    private var birthDate: String? = null
-    private var email: String? = null
+    private var birthDateInput: TextInputEditText? = null
+    private var emailInput: TextInputEditText? = null
+    private var loginContainer: TextInputLayout? = null
+    private var passwordContainer: TextInputLayout? = null
+    private var firstNameContainer: TextInputLayout? = null
+    private var lastNameContainer: TextInputLayout? = null
+    private var descriptionContainer: TextInputLayout? = null
+    private var phoneContainer: TextInputLayout? = null
+    private var birthDateContainer: TextInputLayout? = null
+    private var emailContainer: TextInputLayout? = null
     private val PICK_IMAGE = 1
     var avatarUri: String? = null
 
@@ -56,14 +57,24 @@ class RegisterPage : AppCompatActivity() {
     }
 
     private fun init() {
-        loginInput = findViewById<EditText>(R.id.usernameInput)
-        passwordInput = findViewById<EditText>(R.id.passwordInput)
-        firstNameInput = findViewById<EditText>(R.id.firstNameInput)
-        lastNameInput = findViewById<EditText>(R.id.lastnameInput)
-        descriptionInput = findViewById<EditText>(R.id.descriptionInput)
-        phoneNumber = findViewById<EditText>(R.id.phoneNumberInput)
-        birthDateInput = findViewById<EditText>(R.id.dateInput)
-        emailInput = findViewById<EditText>(R.id.emailInput)
+        loginInput = findViewById<TextInputEditText>(R.id.loginEditText)
+        passwordInput = findViewById<TextInputEditText>(R.id.passwordEditText)
+        firstNameInput = findViewById<TextInputEditText>(R.id.firstNameEditText)
+        lastNameInput = findViewById<TextInputEditText>(R.id.lastNameEditText)
+        descriptionInput = findViewById<TextInputEditText>(R.id.descriptionEditText)
+        phoneNumber = findViewById<TextInputEditText>(R.id.phoneEditText)
+        birthDateInput = findViewById<TextInputEditText>(R.id.dateEditText)
+        emailInput = findViewById<TextInputEditText>(R.id.emailEditText)
+        avatar = findViewById<ImageView>(R.id.avatar)
+
+        loginContainer = findViewById<TextInputLayout>(R.id.loginContainer)
+        passwordContainer = findViewById<TextInputLayout>(R.id.passwordContainer)
+        firstNameContainer = findViewById<TextInputLayout>(R.id.firstNameContainer)
+        lastNameContainer = findViewById<TextInputLayout>(R.id.lastNameContainer)
+        descriptionContainer = findViewById<TextInputLayout>(R.id.descriptionContainer)
+        phoneContainer = findViewById<TextInputLayout>(R.id.phoneContainer)
+        birthDateContainer = findViewById<TextInputLayout>(R.id.dateContainer)
+        emailContainer = findViewById<TextInputLayout>(R.id.emailContainer)
         avatar = findViewById<ImageView>(R.id.avatar)
 
         avatar.let { a ->
@@ -74,6 +85,84 @@ class RegisterPage : AppCompatActivity() {
             }
         }
 
+        validate()
+
+    }
+
+    private fun validate() {
+        loginInput?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                loginContainer?.let { c -> c.helperText = validateUsername() }
+            }
+        }
+        passwordInput?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                passwordContainer?.let { c -> c.helperText = validatePassword() }
+            }
+        }
+        firstNameInput?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                firstNameContainer?.let { c -> c.helperText = validateFirstName() }
+            }
+        }
+        lastNameContainer?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                lastNameContainer?.let { c -> c.helperText = validateLastName() }
+            }
+        }
+        descriptionInput?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                descriptionContainer?.let { c -> c.helperText = validateDescription() }
+            }
+        }
+        phoneNumber?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                phoneContainer?.let { c -> c.helperText = validatePhone() }
+            }
+        }
+        birthDateInput?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                birthDateContainer?.let { c -> c.helperText = validateDate() }
+            }
+        }
+        emailInput?.let { u ->
+            u.setOnFocusChangeListener { _, _ ->
+                emailContainer?.let { c -> c.helperText = validateEmail() }
+            }
+        }
+    }
+
+
+    private fun validateUsername(): String {
+        return validator.validateLogin(loginInput?.text.toString().trim())
+    }
+
+    private fun validatePassword(): String {
+        return validator.validatePassword(passwordInput?.text.toString().trim())
+    }
+
+    private fun validateFirstName(): String {
+        return validator.validateFirstName(firstNameInput?.text.toString().trim())
+    }
+
+    private fun validateLastName(): String {
+        return validator.validateLastName(lastNameInput?.text.toString().trim())
+    }
+
+    private fun validateDescription(): String {
+        return validator.validateDescription(descriptionInput?.text.toString().trim())
+    }
+
+    private fun validatePhone(): String {
+        return validator.validatePhone(phoneNumber?.text.toString().trim())
+    }
+
+    private fun validateDate(): String {
+        return validator.validateDate(birthDateInput?.text.toString().trim())
+    }
+
+    private fun validateEmail(): String {
+        return validator.validateEmail(emailInput?.text.toString().trim())
     }
 
 
@@ -120,104 +209,54 @@ class RegisterPage : AppCompatActivity() {
 
 
     fun register(view: View) {
-
-
-        validate()
-
-
-        val user = UserRequest(
-            login!!, password!!, email!!, firstName!!, lastName!!,
-            description!!, phone!!, birthDate!!, "", true
-        )
-
-        Log.d("User", user.toString())
-
-        apiRepository.register(user,
-            object :
-                Callback<Void> {
-                override fun onResponse(
-                    call: Call<Void>,
-                    response: Response<Void>
-                ) {
-                    Log.d("Tag", response.errorBody().toString())
-                    Log.d("Tag", response.headers().toString())
-                    Log.d("Tag", response.code().toString())
-                    Log.d("Tag", response.isSuccessful.toString())
-
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("Tag", t.message.toString())
-                    Toast.makeText(activity, "Server error : " + t.message, Toast.LENGTH_LONG)
-                        .show()
-                }
-            })
-    }
-
-    private fun validate() {
-        validateLogin()
-        validateEmail()
-        validatePassword()
-        validatePhone()
-        validateDate()
-
-        firstName = firstNameInput?.text.toString().trim()
-        if (firstName == null) {
-            Toast.makeText(activity, "First name validation error", Toast.LENGTH_LONG)
-                .show()
-        }
-
-        lastName = lastNameInput?.text.toString().trim()
-        if (lastName == null) {
-            Toast.makeText(activity, "First name validation error", Toast.LENGTH_LONG)
-                .show()
-        }
-
-        description = descriptionInput?.text.toString().trim()
-        if (description == null) {
-            Toast.makeText(activity, "Description validation error", Toast.LENGTH_LONG)
-                .show()
-        }
-    }
-
-    private fun validateLogin() {
-        login = validator.validateLogin(loginInput?.text.toString().trim())
-        if (login == null) {
-            Toast.makeText(activity, "Login validation error", Toast.LENGTH_LONG)
-                .show()
-        }
-    }
-
-    private fun validatePassword() {
-        password = validator.validatePassword(passwordInput?.text.toString().trim())
-        if (password == null) {
-            Toast.makeText(activity, "Password validation error", Toast.LENGTH_LONG)
-                .show()
-        }
-    }
-
-    private fun validateEmail() {
-        email = validator.validateEmail(emailInput?.text.toString().trim())
-        if (email == null) {
-            Toast.makeText(activity, "Email validation error", Toast.LENGTH_LONG)
-                .show()
-        }
-    }
-
-    private fun validatePhone() {
-        phone = validator.validatePhoneNumber(phoneNumber?.text.toString().trim());
+        val phone = validator.formatPhoneNumber(phoneNumber?.text.toString().trim())
         if (phone == null) {
-            Toast.makeText(activity, "Phone validation error", Toast.LENGTH_LONG)
-                .show()
+            phoneContainer?.helperText = "Invalid phone number"
+        }
+
+        val date = validator.formatDate(birthDateInput?.text.toString().trim())
+        if (date == null) {
+            birthDateContainer?.helperText = "Invalid date of birth"
+        }
+
+        if (phone != null && date != null) {
+
+            val user = UserRequest(
+                loginInput?.text.toString().trim(),
+                passwordInput?.text.toString().trim(),
+                emailInput?.text.toString().trim(),
+                firstNameInput?.text.toString().trim(),
+                lastNameInput?.text.toString().trim(),
+                descriptionInput?.text.toString().trim(),
+                phone, date, "", true
+            )
+
+            Log.d("User", user.toString())
+
+            apiRepository.register(user,
+                object :
+                    Callback<Void> {
+                    override fun onResponse(
+                        call: Call<Void>,
+                        response: Response<Void>
+                    ) {
+                        if (!response.isSuccessful) {
+                            Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG)
+                                .show()
+                        } else {
+                            val intent = Intent(activity, LoginPage::class.java)
+                            startActivity(intent)
+                            activity.finish()
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("Error", t.message.toString())
+                        Toast.makeText(activity, "Server error : " + t.message, Toast.LENGTH_LONG)
+                            .show()
+                    }
+                })
         }
     }
-
-    private fun validateDate() {
-        birthDate = validator.validateDate(birthDateInput?.text.toString().trim());
-        if (birthDate == null) {
-            Toast.makeText(activity, "Date validation error", Toast.LENGTH_LONG)
-                .show()
-        }
-    }
-
 }

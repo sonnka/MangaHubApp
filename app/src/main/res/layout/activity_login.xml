@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.activity.LoginPage">
 
@@ -18,7 +18,7 @@
         android:fontFamily="@font/alata"
         android:onClick="registration"
         android:text="Sign up"
-        android:textColor="#5C5C5C"
+        android:textColor="@color/dark_grey"
         android:textSize="18dp" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_marginTop="85dp"
         android:fontFamily="@font/alata"
         android:text="Sign in"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="30dp"
         android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="30dp"
         app:helperText=""
-        app:helperTextTextColor="@android:color/holo_red_dark"
+        app:helperTextTextColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -55,8 +55,8 @@
             android:hint="Username"
             android:inputType="text"
             android:lines="1"
-            android:textColor="#000000"
-            android:textColorHint="#555555"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
             android:textSize="17dp" />
 
 
@@ -73,7 +73,7 @@
         app:counterEnabled="true"
         app:counterMaxLength="32"
         app:helperText=""
-        app:helperTextTextColor="@android:color/holo_red_dark"
+        app:helperTextTextColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/loginContainer"
@@ -88,8 +88,8 @@
             android:inputType="textPassword"
             android:lines="1"
             android:maxLength="32"
-            android:textColor="#000000"
-            android:textColorHint="#555555"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
             android:textSize="17dp" />
 
 
@@ -105,7 +105,7 @@
         android:fontFamily="@font/alata"
         android:onClick="forgotPassword"
         android:text="Forgot password?"
-        android:textColor="#8A8A8A"
+        android:textColor="@color/light_grey"
         android:textSize="15dp"
         android:textStyle="italic" />
 
@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="75dp"
-        android:backgroundTint="#44E122"
+        android:backgroundTint="@color/green"
         android:fontFamily="@font/alata"
         android:onClick="login"
         android:text="Sign in"

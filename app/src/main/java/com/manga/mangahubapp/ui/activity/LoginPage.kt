@@ -7,6 +7,8 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
+import com.auth0.jwt.JWT
+import com.auth0.jwt.interfaces.DecodedJWT
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.manga.mangahubapp.R
@@ -28,6 +30,7 @@ class LoginPage : AppCompatActivity() {
     private var password: TextInputEditText? = null
     private var usernameContainer: TextInputLayout? = null
     private var passwordContainer: TextInputLayout? = null
+    private var userId: String? = null;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +96,9 @@ class LoginPage : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val tokens = response.body()
                         if (tokens != null) {
+                            userId = parseToken(tokens)
                             val intent = Intent(activity, MainPage::class.java)
+                            intent.putExtra("userId", userId)
                             startActivity(intent)
                             activity.finish()
                         } else {
@@ -133,6 +138,25 @@ class LoginPage : AppCompatActivity() {
                         .show()
                 }
             })
+    }
+
+    private fun parseToken(tokens: LoginResponse): String? {
+        try {
+            val decodedJWT: DecodedJWT = JWT.decode(tokens.accessToken)
+
+            val issuer = decodedJWT.issuer
+
+            val id = decodedJWT.getClaim("id").asString()
+
+            Log.d("Issuer", issuer)
+            Log.d("CustomClaim", id)
+
+            return id;
+        } catch (e: Exception) {
+            // Handle exceptions such as invalid tokens
+            Log.e("TokenParsingError", e.message ?: "Unknown error occurred")
+        }
+        return null;
     }
 
 }

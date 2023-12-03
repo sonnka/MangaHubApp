@@ -3,6 +3,7 @@ package com.manga.mangahubapp.ui.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.DatePicker
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -20,6 +22,7 @@ import com.manga.mangahubapp.util.Validator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.net.URI
 import java.net.URISyntaxException
 import java.util.Calendar
@@ -50,6 +53,7 @@ class RegisterPage : AppCompatActivity() {
     private var emailContainer: TextInputLayout? = null
     private val PICK_IMAGE = 1
     var avatarUri: String? = null
+    var avatarTemp: ByteArray? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -205,6 +209,7 @@ class RegisterPage : AppCompatActivity() {
                 e.printStackTrace()
             }
             avatar!!.setImageURI(selectedImageUri)
+            //avatarTemp = getAvatar(avatar)
             avatarUri = uri.toString()
             activity.contentResolver
                 .takePersistableUriPermission(
@@ -212,6 +217,14 @@ class RegisterPage : AppCompatActivity() {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
         }
+    }
+
+    private fun getAvatar(avatar: ImageView?): ByteArray {
+        var bitmap = avatar?.drawable?.toBitmap()
+        val outputStream = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        val byteArray: ByteArray = outputStream.toByteArray()
+        return byteArray;
     }
 
 

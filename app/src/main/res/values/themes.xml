@@ -1,9 +1,18 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MangaHubApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <item name="colorPrimary">#44E122</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryVariant">@color/green</item>
+        <item name="colorOnPrimary">#000000</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/green</item>
+        <item name="colorSecondaryVariant">@color/black</item>
+        <item name="colorOnSecondary">#000000</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="34">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.MangaHubApp" parent="Base.Theme.MangaHubApp" />
+
 </resources>

@@ -63,7 +63,20 @@ class ApiRepositoryImpl : ApiRepository {
         service.getManga(mangaId).enqueue(callback)
     }
 
-    override fun getMangas(search: SearchRequest, callback: Callback<List<MangaListItemResponse>>) {
-        service.getMangas(search).enqueue(callback)
+    override fun getMangas(
+        token: String,
+        search: SearchRequest,
+        callback: Callback<List<MangaListItemResponse>>
+    ) {
+        if (search.searchQuery.isNotBlank() && search.genre.isNotBlank()) {
+            service.getMangas(token, search.searchQuery, search.genre, search.rating)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNotBlank() && search.genre.isBlank()) {
+            service.getMangas(token, search.rating, search.searchQuery)
+                .enqueue(callback)
+        } else {
+            service.getMangas(token)
+                .enqueue(callback)
+        }
     }
 }

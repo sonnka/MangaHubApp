@@ -2,6 +2,7 @@ package com.manga.mangahubapp.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +14,7 @@ class MainPage : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelec
 
     var bottomNavigationView: BottomNavigationView? = null
     private val activity: BottomNavigationView.OnNavigationItemSelectedListener = this@MainPage
-    private var userId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,6 +37,11 @@ class MainPage : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelec
                 userId = arguments.getString("userId")
                 userId?.let { setUserId(it) }
             }
+            if (arguments.containsKey("token")) {
+                token = arguments.getString("token")
+                //  token?.let { setToken(it) }
+                setToken(token!!)
+            }
         } else {
             Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
             val intent = Intent(this, LoginPage::class.java)
@@ -43,19 +49,28 @@ class MainPage : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelec
         }
     }
 
+
     companion object {
-        private lateinit var currentUser: MainPage
+        private var userId: String? = null
+        private var token: String? = null
+
         fun getUserId(): String? {
-            return if (::currentUser.isInitialized) {
-                currentUser.userId
-            } else {
-                null
-            }
+            return userId
+        }
+
+        fun getToken(): String? {
+            Log.d("token", token + " ")
+            return token
         }
     }
 
-    private fun setUserId(userId: String) {
-        this.userId = userId
+
+    private fun setUserId(userIdValue: String) {
+        userId = userIdValue
+    }
+
+    private fun setToken(tokenValue: String) {
+        token = tokenValue
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

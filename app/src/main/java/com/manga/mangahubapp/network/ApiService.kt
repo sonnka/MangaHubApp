@@ -3,7 +3,6 @@ package com.manga.mangahubapp.network
 import com.manga.mangahubapp.model.request.ForgotPasswordRequest
 import com.manga.mangahubapp.model.request.LoginRequest
 import com.manga.mangahubapp.model.request.MangaRequest
-import com.manga.mangahubapp.model.request.SearchRequest
 import com.manga.mangahubapp.model.request.UpdateUserRequest
 import com.manga.mangahubapp.model.request.UserRequest
 import com.manga.mangahubapp.model.response.LoginResponse
@@ -14,8 +13,10 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -48,6 +49,30 @@ interface ApiService {
     fun getManga(mangaId: String): Call<MangaResponse>
 
     @GET("api/Mangas/get-all-filter")
-    fun getMangas(search: SearchRequest): Call<List<MangaListItemResponse>>
+    fun getMangas(
+        @Header("Authorization") token: String,
+        @Query("SearchRequest") search: String,
+        @Query("Genre") genre: String,
+        @Query("Rating") rating: Double
+    ): Call<List<MangaListItemResponse>>
+
+    @GET("api/Mangas/get-all-filter")
+    fun getMangas(
+        @Header("Authorization") token: String,
+        @Query("Genre") genre: String,
+        @Query("Rating") rating: Double
+    ): Call<List<MangaListItemResponse>>
+
+    @GET("api/Mangas/get-all-filter")
+    fun getMangas(
+        @Header("Authorization") token: String,
+        @Query("Rating") rating: Double,
+        @Query("SearchRequest") search: String
+    ): Call<List<MangaListItemResponse>>
+
+    @GET("api/Mangas/get-all")
+    fun getMangas(
+        @Header("Authorization") token: String
+    ): Call<List<MangaListItemResponse>>
 
 }

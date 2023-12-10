@@ -22,5 +22,9 @@ interface ApiRepository {
     fun updateManga(manga: MangaRequest, callback: Callback<Void>)
     fun deleteManga(mangaId: String, callback: Callback<Void>)
     fun getManga(mangaId: String, callback: Callback<MangaResponse>)
-    fun getMangas(search: SearchRequest, callback: Callback<List<MangaListItemResponse>>)
+    fun getMangas(
+        token: String,
+        search: SearchRequest,
+        callback: Callback<List<MangaListItemResponse>>
+    )
 }

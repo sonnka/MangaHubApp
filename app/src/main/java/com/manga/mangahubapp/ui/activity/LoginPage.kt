@@ -98,6 +98,7 @@ class LoginPage : AppCompatActivity() {
                             userId = parseToken(tokens)
                             val intent = Intent(activity, MainPage::class.java)
                             intent.putExtra("userId", userId)
+                            intent.putExtra("token", tokens.accessToken)
                             startActivity(intent)
                             activity.finish()
                         } else {

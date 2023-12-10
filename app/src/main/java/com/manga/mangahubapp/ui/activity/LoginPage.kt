@@ -39,7 +39,6 @@ class LoginPage : AppCompatActivity() {
         init()
     }
 
-
     private fun init() {
         username = findViewById<TextInputEditText>(R.id.loginEditText)
         password = findViewById<TextInputEditText>(R.id.passwordEditText)
@@ -153,7 +152,6 @@ class LoginPage : AppCompatActivity() {
 
             return id;
         } catch (e: Exception) {
-            // Handle exceptions such as invalid tokens
             Log.e("TokenParsingError", e.message ?: "Unknown error occurred")
         }
         return null;

@@ -12,6 +12,7 @@ import com.manga.mangahubapp.model.response.MangaResponse
 import com.manga.mangahubapp.model.response.UserResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -33,10 +34,20 @@ interface ApiService {
 
     @POST("api/User/update-user-profile")
     fun updateUser(user: UpdateUserRequest): Call<Void>
+
+    @POST("api/Mangas")
     fun createManga(manga: MangaRequest): Call<Void>
+
+    @POST("api/Mangas")
     fun updateManga(manga: MangaRequest): Call<Void>
+
+    @DELETE("api/Mangas")
     fun deleteManga(mangaId: String): Call<Void>
+
+    @GET("api/Mangas")
     fun getManga(mangaId: String): Call<MangaResponse>
+
+    @GET("api/Mangas/get-all-filter")
     fun getMangas(search: SearchRequest): Call<List<MangaListItemResponse>>
 
 }

@@ -20,7 +20,7 @@ class ApiRepositoryImpl : ApiRepository {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://5e28-46-98-182-246.ngrok-free.app/")
+        .baseUrl("https://06da-46-98-183-16.ngrok-free.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

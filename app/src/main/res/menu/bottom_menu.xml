@@ -2,15 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/search"
         android:icon="@drawable/home_icon"
         android:iconTint="@color/black"
-        android:title="Home" />
-    <item
-        android:id="@+id/menu"
-        android:icon="@drawable/menu_icon"
-        android:iconTint="@color/black"
-        android:title="Menu" />
+        android:title="Search" />
+
     <item
         android:id="@+id/create"
         android:icon="@drawable/create_icon"

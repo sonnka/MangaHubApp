@@ -1,7 +1,9 @@
 package com.manga.mangahubapp.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.manga.mangahubapp.R
@@ -11,33 +13,58 @@ class MainPage : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelec
 
     var bottomNavigationView: BottomNavigationView? = null
     private val activity: BottomNavigationView.OnNavigationItemSelectedListener = this@MainPage
+    private var userId: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        getExtra()
 
         bottomNavigationView = findViewById(R.id.bottomMenu);
 
         bottomNavigationView?.let { b ->
             b.setOnNavigationItemSelectedListener(activity)
-            b.setSelectedItemId(R.id.home)
+            b.setSelectedItemId(R.id.search)
             b.setItemIconTintList(null)
         }
     }
 
+    private fun getExtra() {
+        val arguments = intent.extras
+        if (arguments != null) {
+            if (arguments.containsKey("userId")) {
+                userId = arguments.getString("userId")
+                userId?.let { setUserId(it) }
+            }
+        } else {
+            Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
+            val intent = Intent(this, LoginPage::class.java)
+            startActivity(intent)
+        }
+    }
+
+    companion object {
+        private lateinit var currentUser: MainPage
+        fun getUserId(): String? {
+            return if (::currentUser.isInitialized) {
+                currentUser.userId
+            } else {
+                null
+            }
+        }
+    }
+
+    private fun setUserId(userId: String) {
+        this.userId = userId
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu -> {
-                supportFragmentManager.beginTransaction().replace(
-                    R.id.Fragment,
-                    MenuPage()
-                ).commit()
-                return true
-            }
 
-            R.id.home -> {
+            R.id.search -> {
                 supportFragmentManager.beginTransaction().replace(
                     R.id.Fragment,
-                    HomePage()
+                    SearchPage()
                 ).commit()
                 return true
             }

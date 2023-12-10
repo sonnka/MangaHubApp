@@ -1,4 +1,4 @@
-package com.manga.mangahubapp.model
+package com.manga.mangahubapp.model.response
 
 import com.google.gson.annotations.SerializedName
 

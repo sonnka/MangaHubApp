@@ -1,9 +1,15 @@
 package com.manga.mangahubapp.network
 
-import com.manga.mangahubapp.model.ForgotPasswordRequest
-import com.manga.mangahubapp.model.LoginRequest
-import com.manga.mangahubapp.model.LoginResponse
-import com.manga.mangahubapp.model.UserRequest
+import com.manga.mangahubapp.model.request.ForgotPasswordRequest
+import com.manga.mangahubapp.model.request.LoginRequest
+import com.manga.mangahubapp.model.request.MangaRequest
+import com.manga.mangahubapp.model.request.SearchRequest
+import com.manga.mangahubapp.model.request.UpdateUserRequest
+import com.manga.mangahubapp.model.request.UserRequest
+import com.manga.mangahubapp.model.response.LoginResponse
+import com.manga.mangahubapp.model.response.MangaListItemResponse
+import com.manga.mangahubapp.model.response.MangaResponse
+import com.manga.mangahubapp.model.response.UserResponse
 import okhttp3.OkHttpClient
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -33,9 +39,31 @@ class ApiRepositoryImpl : ApiRepository {
         service.forgotPassword(email).enqueue(callback)
     }
 
+    override fun getUser(userId: Integer, callback: Callback<UserResponse>) {
+        service.getUser(userId).enqueue(callback)
+    }
 
-//
-//    fun fetchDataFromUrl(url: String, callback: Callback<Any>) {
-//        service.fetchData(url).enqueue(callback)
-//    }
+    override fun updateUser(user: UpdateUserRequest, callback: Callback<Void>) {
+        service.updateUser(user).enqueue(callback)
+    }
+
+    override fun createManga(manga: MangaRequest, callback: Callback<Void>) {
+        service.createManga(manga).enqueue(callback)
+    }
+
+    override fun updateManga(manga: MangaRequest, callback: Callback<Void>) {
+        service.updateManga(manga).enqueue(callback)
+    }
+
+    override fun deleteManga(mangaId: String, callback: Callback<Void>) {
+        service.deleteManga(mangaId).enqueue(callback)
+    }
+
+    override fun getManga(mangaId: String, callback: Callback<MangaResponse>) {
+        service.getManga(mangaId).enqueue(callback)
+    }
+
+    override fun getMangas(search: SearchRequest, callback: Callback<List<MangaListItemResponse>>) {
+        service.getMangas(search).enqueue(callback)
+    }
 }

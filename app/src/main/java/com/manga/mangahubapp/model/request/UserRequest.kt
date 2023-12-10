@@ -1,4 +1,4 @@
-package com.manga.mangahubapp.model
+package com.manga.mangahubapp.model.request
 
 data class UserRequest(
     var login: String,

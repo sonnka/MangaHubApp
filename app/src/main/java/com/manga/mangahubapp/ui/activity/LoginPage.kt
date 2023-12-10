@@ -12,8 +12,8 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.manga.mangahubapp.R
-import com.manga.mangahubapp.model.LoginRequest
-import com.manga.mangahubapp.model.LoginResponse
+import com.manga.mangahubapp.model.request.LoginRequest
+import com.manga.mangahubapp.model.response.LoginResponse
 import com.manga.mangahubapp.network.ApiRepositoryImpl
 import com.manga.mangahubapp.util.Validator
 import retrofit2.Call

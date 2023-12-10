@@ -16,7 +16,7 @@ import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.manga.mangahubapp.R
-import com.manga.mangahubapp.model.UserRequest
+import com.manga.mangahubapp.model.request.UserRequest
 import com.manga.mangahubapp.network.ApiRepositoryImpl
 import com.manga.mangahubapp.util.Validator
 import retrofit2.Call

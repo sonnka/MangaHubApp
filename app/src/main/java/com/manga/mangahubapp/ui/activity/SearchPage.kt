@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,9 +45,26 @@ class SearchPage() : Fragment() {
     private var spinner: Spinner? = null
     private var mangaAdapter: MangaAdapter? = null
     private val apiRepository = ApiRepositoryImpl()
-    private var genre: EditText? = null
+    private var genre: TextView? = null
     private var token: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+
+        }
+    }
+
+    companion object {
+
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            ProfilePage().apply {
+                arguments = Bundle().apply {
+
+                }
+            }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +85,7 @@ class SearchPage() : Fragment() {
         ratings = ArrayList<Double>()
         images = ArrayList<String>()
 
-        genre = EditText(this.requireContext())
+        genre = TextView(this.requireContext())
 
         recyclerView = v.findViewById(R.id.recycle_view)
         searchField = v.findViewById(R.id.searchField)
@@ -77,11 +95,24 @@ class SearchPage() : Fragment() {
         spinner = v.findViewById(R.id.spinner)
 
         searchButton.let { s ->
-            s!!.setOnClickListener(View.OnClickListener {})
+            s!!.setOnClickListener(View.OnClickListener {
+                clearRecycleView()
+                displayAllData()
+            })
         }
 
         resetButton.let { s ->
-            s!!.setOnClickListener(View.OnClickListener {})
+            s!!.setOnClickListener(View.OnClickListener {
+                searchField.let { s ->
+                    s!!.setText("")
+                }
+                rating.let { r ->
+                    r!!.setText("")
+                }
+
+                clearRecycleView()
+                displayAllData()
+            })
         }
 
         val list = Genre.entries.map { g -> g.name }.toList()
@@ -109,7 +140,9 @@ class SearchPage() : Fragment() {
                     genre!!.setText(item)
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    genre!!.setText("Select genre")
+                }
             }
 
         spinner.let { s ->
@@ -117,10 +150,10 @@ class SearchPage() : Fragment() {
         }
 
         displayAllData()
-        setAdapterOnRecycleView()
     }
 
     private fun setAdapterOnRecycleView() {
+        Log.d("adapter", "")
         mangaAdapter = MangaAdapter(
             getActivity(), mangaIds, names, genres, ratings, images
         )
@@ -134,6 +167,7 @@ class SearchPage() : Fragment() {
 
         var search: SearchRequest? = null
         if (rating!!.text.isEmpty() || genre!!.text.isEmpty() || searchField!!.text.isEmpty()) {
+            Log.d("v1", "dddddd")
             search = SearchRequest(
                 "",
                 "",
@@ -141,6 +175,7 @@ class SearchPage() : Fragment() {
                 0.0
             )
         } else {
+            Log.d("v2", "dddddd")
             search = SearchRequest(
                 searchField!!.text.toString(),
                 genre!!.text.toString(),
@@ -160,10 +195,12 @@ class SearchPage() : Fragment() {
                     if (dataList != null) {
                         fillData(dataList)
                         Log.d("List ", dataList.toString())
+
                     } else {
                         Toast.makeText(getActivity(), "Something went wrong1!", Toast.LENGTH_LONG)
                             .show()
                     }
+                    setAdapterOnRecycleView()
                 } else {
                     Log.d("Error2", response.code().toString())
                     Toast.makeText(getActivity(), "Something went wrong!2", Toast.LENGTH_LONG)
@@ -172,6 +209,7 @@ class SearchPage() : Fragment() {
             }
 
             override fun onFailure(call: Call<List<MangaListItemResponse>>, t: Throwable) {
+                Log.d("error3", t.message.toString())
                 Toast.makeText(getActivity(), "Something went wrong!3", Toast.LENGTH_LONG).show()
             }
         })
@@ -193,9 +231,10 @@ class SearchPage() : Fragment() {
             for (item in dataList) {
                 mangaIds!!.add(item.mangaId)
                 names!!.add(item.title)
-                genres!!.add(item.genre)
+                genres!!.add(Genre.entries[item.genre.toInt()].name)
                 ratings!!.add(item.rating)
-                images!!.add(item.coverImage)
+                //images!!.add(item.coverImage.toString())
+                images!!.add("")
             }
         }
     }

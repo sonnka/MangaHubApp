@@ -2,7 +2,7 @@ package com.manga.mangahubapp.ui.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,17 +23,19 @@ class MangaAdapter(
 ) : RecyclerView.Adapter<MangaAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        Log.d("inside0", "")
         val inflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.row_manga, parent, false)
         return MyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.mangaId.setText(mangaIds!!.get(position).toString())
-        holder.rating.setText(ratings!!.get(position).toString())
-        holder.name.setText(names!!.get(position).toString())
-        holder.genre.setText(genres!!.get(position).toString())
-        holder.image.setImageURI(Uri.parse(images!!.get(position).toString()))
+        Log.d("inside", mangaIds!![position].toString())
+        holder.mangaId.setText(mangaIds!![position].toString())
+        holder.rating.setText(ratings!![position].toString())
+        holder.name.setText(names!![position].toString())
+        holder.genre.setText(genres!![position].toString())
+        //  holder.image.setImageURI(Uri.parse(images!!.get(position).toString()))
         holder.view.setOnClickListener { v ->
             val txt = v.findViewById<TextView>(R.id.mangaId)
             val intent = Intent(context, MangaInfo::class.java)
@@ -48,19 +50,16 @@ class MangaAdapter(
     }
 
 
-    class MyViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        var mangaId: TextView
-        var name: TextView
-        var rating: TextView
-        var genre: TextView
-        var image: ImageView
+    class MyViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var mangaId: TextView = itemView.findViewById<TextView>(R.id.mangaId)
+        var name: TextView = itemView.findViewById<TextView>(R.id.name)
+        var rating: TextView = itemView.findViewById<TextView>(R.id.rating)
+        var genre: TextView = itemView.findViewById<TextView>(R.id.genre)
+        var image: ImageView = itemView.findViewById<ImageView>(R.id.mangaCover)
+        var view: View = itemView
 
-        init {
-            mangaId = itemView.findViewById<TextView>(R.id.mangaId)
-            name = itemView.findViewById<TextView>(R.id.name)
-            image = itemView.findViewById<ImageView>(R.id.mangaCover)
-            rating = itemView.findViewById<TextView>(R.id.rating)
-            genre = itemView.findViewById<TextView>(R.id.genre)
+        fun getItemView(): View {
+            return view
         }
     }
 

@@ -4,18 +4,18 @@ import com.google.gson.annotations.SerializedName
 
 data class MangaListItemResponse(
 
-    @SerializedName("MangaId")
+    @SerializedName("mangaId")
     val mangaId: String,
 
-    @SerializedName("Title")
+    @SerializedName("title")
     val title: String,
 
-    @SerializedName("Genre")
+    @SerializedName("genre")
     val genre: String,
 
-    @SerializedName("CoverImage")
+    @SerializedName("coverImage")
     val coverImage: String,
 
-    @SerializedName("Rating")
+    @SerializedName("rating")
     val rating: Double
 )

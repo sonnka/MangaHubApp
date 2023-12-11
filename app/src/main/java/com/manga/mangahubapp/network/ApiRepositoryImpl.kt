@@ -1,5 +1,6 @@
 package com.manga.mangahubapp.network
 
+import com.manga.mangahubapp.model.enums.Genre
 import com.manga.mangahubapp.model.request.ForgotPasswordRequest
 import com.manga.mangahubapp.model.request.LoginRequest
 import com.manga.mangahubapp.model.request.MangaRequest
@@ -68,10 +69,16 @@ class ApiRepositoryImpl : ApiRepository {
         search: SearchRequest,
         callback: Callback<List<MangaListItemResponse>>
     ) {
-        if (search.searchQuery.isNotBlank() && search.genre.isNotBlank()) {
-            service.getMangas(token, search.searchQuery, search.genre, search.rating)
+        var genre: String? = null
+
+        if (search.genre.isNotBlank()) {
+            genre = Genre.valueOf(search.genre).ordinal.toString()
+        }
+
+        if (search.searchQuery.isNotBlank() && !genre.isNullOrEmpty()) {
+            service.getMangas(token, search.searchQuery, genre, search.rating)
                 .enqueue(callback)
-        } else if (search.searchQuery.isNotBlank() && search.genre.isBlank()) {
+        } else if (search.searchQuery.isNotBlank() && genre.isNullOrEmpty()) {
             service.getMangas(token, search.rating, search.searchQuery)
                 .enqueue(callback)
         } else {

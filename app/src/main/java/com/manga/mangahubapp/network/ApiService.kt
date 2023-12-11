@@ -46,10 +46,16 @@ interface ApiService {
     fun updateManga(manga: MangaRequest): Call<Void>
 
     @DELETE("api/Mangas")
-    fun deleteManga(mangaId: String): Call<Void>
+    fun deleteManga(
+        @Header("Authorization") token: String,
+        @Query("mangaId") manga: String
+    ): Call<Void>
 
     @GET("api/Mangas")
-    fun getManga(mangaId: String): Call<MangaResponse>
+    fun getManga(
+        @Header("Authorization") token: String,
+        @Query("mangaId") manga: String
+    ): Call<MangaResponse>
 
     @GET("api/Mangas/get-all-filter")
     fun getMangas(

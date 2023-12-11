@@ -1,26 +1,36 @@
 package com.manga.mangahubapp.model.response
 
-import com.manga.mangahubapp.model.enums.Genre
-import java.time.LocalDateTime
+import com.google.gson.annotations.SerializedName
 
 data class MangaResponse(
+
+    @SerializedName("mangaId")
     val mangaId: String,
 
+    @SerializedName("title")
     val title: String,
 
-    val genre: Genre,
+    @SerializedName("genre")
+    val genre: String,
 
+    @SerializedName("description")
     val description: String,
 
-    val releasedOn: LocalDateTime,
+    @SerializedName("releasedOn")
+    val releasedOn: String,
 
-    val createdOn: LocalDateTime,
+    @SerializedName("createdOn")
+    val createdOn: String,
 
-    val lastUpdatedOn: LocalDateTime,
+    @SerializedName("lastUpdatedOn")
+    val lastUpdatedOn: String,
 
+    @SerializedName("coverImage")
     val coverImage: String,
 
-    val userId: Integer,
+    @SerializedName("userId")
+    val userId: Int,
 
+    @SerializedName("rating")
     val rating: Double
 )

@@ -226,7 +226,7 @@ class SearchPage() : Fragment() {
     @SuppressLint("Range")
     private fun fillData(dataList: List<MangaListItemResponse>) {
         if (dataList.size == 0) {
-            Toast.makeText(getActivity(), "No data!", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity.context, "No data!", Toast.LENGTH_LONG).show()
         } else {
             for (item in dataList) {
                 mangaIds!!.add(item.mangaId)

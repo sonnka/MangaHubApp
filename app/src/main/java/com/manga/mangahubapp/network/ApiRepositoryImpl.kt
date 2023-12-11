@@ -56,12 +56,12 @@ class ApiRepositoryImpl : ApiRepository {
         service.updateManga(manga).enqueue(callback)
     }
 
-    override fun deleteManga(mangaId: String, callback: Callback<Void>) {
-        service.deleteManga(mangaId).enqueue(callback)
+    override fun deleteManga(token: String, mangaId: String, callback: Callback<Void>) {
+        service.deleteManga(token, mangaId).enqueue(callback)
     }
 
-    override fun getManga(mangaId: String, callback: Callback<MangaResponse>) {
-        service.getManga(mangaId).enqueue(callback)
+    override fun getManga(token: String, mangaId: String, callback: Callback<MangaResponse>) {
+        service.getManga(token, mangaId).enqueue(callback)
     }
 
     override fun getMangas(

@@ -1,6 +1,7 @@
 package com.manga.mangahubapp.ui.activity
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,7 +27,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class SearchPage : Fragment() {
+class SearchPage() : Fragment() {
 
     private val activity: Fragment = this@SearchPage
     private var userId: String? = null
@@ -46,10 +47,11 @@ class SearchPage : Fragment() {
     private var genre: EditText? = null
     private var token: String? = null
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val v: View = inflater.inflate(R.layout.fragment_search_page, container, false)
         init(v)
         return v
@@ -91,7 +93,7 @@ class SearchPage : Fragment() {
         adapter.setDropDownViewResource(R.layout.spinner_item)
 
         spinner.let { s ->
-            s!!.setAdapter(adapter)
+            s!!.adapter = adapter
         }
 
 
@@ -111,7 +113,7 @@ class SearchPage : Fragment() {
             }
 
         spinner.let { s ->
-            s!!.setOnItemSelectedListener(itemSelectedListener)
+            s!!.onItemSelectedListener = itemSelectedListener
         }
 
         displayAllData()
@@ -183,6 +185,7 @@ class SearchPage : Fragment() {
         images = ArrayList<String>()
     }
 
+    @SuppressLint("Range")
     private fun fillData(dataList: List<MangaListItemResponse>) {
         if (dataList.size == 0) {
             Toast.makeText(getActivity(), "No data!", Toast.LENGTH_LONG).show()

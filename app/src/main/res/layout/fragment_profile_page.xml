@@ -50,22 +50,11 @@
                 android:layout_marginBottom="15dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/usernameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/alata"
-                    android:lines="1"
-                    android:text="username"
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
@@ -79,7 +68,7 @@
                         android:lines="1"
                         android:text="FirstName"
                         android:textColor="@color/black"
-                        android:textSize="17dp" />
+                        android:textSize="19dp" />
 
                     <TextView
                         android:id="@+id/lastNameText"
@@ -92,7 +81,7 @@
                         android:lines="1"
                         android:text="LastName"
                         android:textColor="@color/black"
-                        android:textSize="17dp" />
+                        android:textSize="19dp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -117,9 +106,10 @@
                     android:lines="1"
                     android:text="Personal info"
                     android:textColor="@color/light_grey"
-                    android:textSize="18dp" />
+                    android:textSize="17dp" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/editUserButton"
                     style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -130,6 +120,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/emailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
@@ -138,9 +129,10 @@
                 android:lines="1"
                 android:text="Email"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="19dp" />
 
             <TextView
+                android:id="@+id/dateOfBirthText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
@@ -149,10 +141,11 @@
                 android:lines="1"
                 android:text="Date of birth"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="19dp" />
 
 
             <TextView
+                android:id="@+id/phoneText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
@@ -161,9 +154,10 @@
                 android:lines="1"
                 android:text="Phone"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="19dp" />
 
             <TextView
+                android:id="@+id/descriptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
@@ -173,7 +167,7 @@
                 android:lines="1"
                 android:text="Description"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="19dp" />
 
         </LinearLayout>
 
@@ -198,7 +192,7 @@
                     android:lines="1"
                     android:text="System settings"
                     android:textColor="@color/light_grey"
-                    android:textSize="18dp" />
+                    android:textSize="17dp" />
             </LinearLayout>
 
             <TextView
@@ -211,31 +205,31 @@
                 android:lines="1"
                 android:text="Change theme"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="19dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/alata"
                 android:lines="1"
                 android:text="Change language"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="19dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/alata"
                 android:lines="1"
                 android:text="Support service"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="19dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -246,6 +240,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/singOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
@@ -255,7 +250,7 @@
                 android:lines="1"
                 android:text="Sing out"
                 android:textColor="@color/red"
-                android:textSize="20dp" />
+                android:textSize="19dp" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

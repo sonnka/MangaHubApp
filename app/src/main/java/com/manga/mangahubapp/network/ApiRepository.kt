@@ -16,7 +16,7 @@ interface ApiRepository {
     fun login(user: LoginRequest, callback: Callback<LoginResponse>)
     fun register(user: UserRequest, callback: Callback<Void>)
     fun forgotPassword(email: ForgotPasswordRequest, callback: Callback<Void>)
-    fun getUser(userId: Integer, callback: Callback<UserResponse>)
+    fun getUser(token: String, userId: Int, callback: Callback<UserResponse>)
     fun updateUser(user: UpdateUserRequest, callback: Callback<Void>)
     fun createManga(manga: MangaRequest, callback: Callback<Void>)
     fun updateManga(manga: MangaRequest, callback: Callback<Void>)

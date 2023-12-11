@@ -35,11 +35,10 @@ class MainPage : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelec
         if (arguments != null) {
             if (arguments.containsKey("userId")) {
                 userId = arguments.getString("userId")
-                userId?.let { setUserId(it) }
+                setUserId(userId!!)
             }
             if (arguments.containsKey("token")) {
                 token = arguments.getString("token")
-                //  token?.let { setToken(it) }
                 setToken(token!!)
             }
         } else {

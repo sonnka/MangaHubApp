@@ -31,7 +31,10 @@ interface ApiService {
     fun forgotPassword(@Body email: ForgotPasswordRequest): Call<Void>
 
     @GET("api/User")
-    fun getUser(userId: Integer): Call<UserResponse>
+    fun getUser(
+        @Header("Authorization") token: String,
+        @Query("userId") userId: Int
+    ): Call<UserResponse>
 
     @POST("api/User/update-user-profile")
     fun updateUser(user: UpdateUserRequest): Call<Void>

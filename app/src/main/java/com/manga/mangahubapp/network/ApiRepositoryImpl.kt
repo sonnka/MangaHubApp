@@ -39,8 +39,8 @@ class ApiRepositoryImpl : ApiRepository {
         service.forgotPassword(email).enqueue(callback)
     }
 
-    override fun getUser(userId: Integer, callback: Callback<UserResponse>) {
-        service.getUser(userId).enqueue(callback)
+    override fun getUser(token: String, userId: Int, callback: Callback<UserResponse>) {
+        service.getUser(token, userId).enqueue(callback)
     }
 
     override fun updateUser(user: UpdateUserRequest, callback: Callback<Void>) {

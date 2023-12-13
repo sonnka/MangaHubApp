@@ -115,10 +115,12 @@ class SearchPage() : Fragment() {
             })
         }
 
-        val list = Genre.entries.map { g -> g.name }.toList()
+        val list = Genre.entries.map { g -> g.name }.toMutableList()
+
+        list.add("")
 
         val adapter: ArrayAdapter<String?> = ArrayAdapter<String?>(
-            this.requireContext(), R.layout.spinner_item, list
+            this.requireContext(), R.layout.spinner_item, list.toList()
         )
 
         adapter.setDropDownViewResource(R.layout.spinner_item)
@@ -142,6 +144,7 @@ class SearchPage() : Fragment() {
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                     genre!!.setText("Select genre")
+                    this@SearchPage.spinner!!.setSelection(list.lastIndex)
                 }
             }
 

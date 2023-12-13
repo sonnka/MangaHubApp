@@ -94,7 +94,7 @@ class MainPage : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelec
             R.id.create -> {
                 supportFragmentManager.beginTransaction().replace(
                     R.id.Fragment,
-                    CreatePage()
+                    CreateMangaPage()
                 ).commit()
                 return true
             }

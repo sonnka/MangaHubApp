@@ -44,7 +44,7 @@
             android:name=".ui.activity.MainPage"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.CreatePage"
+            android:name=".ui.activity.CreateMangaPage"
             android:exported="false" />
         <activity
             android:name=".ui.activity.SearchPage"

@@ -4,6 +4,7 @@ import com.manga.mangahubapp.model.request.ForgotPasswordRequest
 import com.manga.mangahubapp.model.request.LoginRequest
 import com.manga.mangahubapp.model.request.MangaRequest
 import com.manga.mangahubapp.model.request.SearchRequest
+import com.manga.mangahubapp.model.request.UpdateMangaRequest
 import com.manga.mangahubapp.model.request.UpdateUserRequest
 import com.manga.mangahubapp.model.request.UserRequest
 import com.manga.mangahubapp.model.response.LoginResponse
@@ -48,7 +49,7 @@ interface ApiRepository {
 
     fun updateManga(
         token: String,
-        manga: MangaRequest,
+        manga: UpdateMangaRequest,
         callback: Callback<Void>
     )
 

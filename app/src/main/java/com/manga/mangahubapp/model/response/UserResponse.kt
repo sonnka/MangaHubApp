@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class UserResponse(
 
     @SerializedName("userId")
-    val userId: Integer,
+    val userId: Int,
 
     @SerializedName("username")
     val username: String,

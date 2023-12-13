@@ -106,20 +106,25 @@ class LoginPage : AppCompatActivity() {
                                 .setTitle("Sing in")
                                 .setMessage("Something went wrong. Try again later.")
                                 .setPositiveButton("Okay") { _, _ ->
-                                    val intent = Intent(activity, LoginPage::class.java)
-                                    startActivity(intent)
-                                    activity.finish()
+//                                    val intent = Intent(activity, LoginPage::class.java)
+//                                    startActivity(intent)
+//                                    activity.finish()
+                                    username!!.setText("")
+                                    password!!.setText("")
                                 }
                                 .show()
                         }
                     } else {
+                        Log.d("Error status code", response.code().toString())
                         AlertDialog.Builder(activity)
                             .setTitle("Sing in")
                             .setMessage("Something went wrong. Try again later.")
                             .setPositiveButton("Okay") { _, _ ->
-                                val intent = Intent(activity, LoginPage::class.java)
-                                startActivity(intent)
-                                activity.finish()
+//                                val intent = Intent(activity, LoginPage::class.java)
+//                                startActivity(intent)
+//                                activity.finish()
+                                username!!.setText("")
+                                password!!.setText("")
                             }
                             .show()
                     }
@@ -131,9 +136,11 @@ class LoginPage : AppCompatActivity() {
                         .setTitle("Sing in")
                         .setMessage("Something went wrong. Try again later.")
                         .setPositiveButton("Okay") { _, _ ->
-                            val intent = Intent(activity, LoginPage::class.java)
-                            startActivity(intent)
-                            activity.finish()
+//                            val intent = Intent(activity, LoginPage::class.java)
+//                            startActivity(intent)
+//                            activity.finish()
+                            username!!.setText("")
+                            password!!.setText("")
                         }
                         .show()
                 }

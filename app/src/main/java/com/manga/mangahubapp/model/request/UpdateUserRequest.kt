@@ -1,7 +1,7 @@
 package com.manga.mangahubapp.model.request
 
 data class UpdateUserRequest(
-    val userId: Integer,
+    val userId: Int,
 
     val firstName: String,
 

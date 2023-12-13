@@ -1,6 +1,7 @@
 package com.manga.mangahubapp.model.request
 
-data class MangaRequest(
+data class UpdateMangaRequest(
+    val mangaId: String,
 
     val title: String,
 
@@ -10,7 +11,7 @@ data class MangaRequest(
 
     val releasedOn: String,
 
-    val createdOn: String,
+    val lastUpdatedOn: String,
 
     val coverImage: String,
 

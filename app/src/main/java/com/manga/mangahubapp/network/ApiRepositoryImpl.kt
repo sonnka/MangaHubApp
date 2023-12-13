@@ -5,6 +5,7 @@ import com.manga.mangahubapp.model.request.ForgotPasswordRequest
 import com.manga.mangahubapp.model.request.LoginRequest
 import com.manga.mangahubapp.model.request.MangaRequest
 import com.manga.mangahubapp.model.request.SearchRequest
+import com.manga.mangahubapp.model.request.UpdateMangaRequest
 import com.manga.mangahubapp.model.request.UpdateUserRequest
 import com.manga.mangahubapp.model.request.UserRequest
 import com.manga.mangahubapp.model.response.LoginResponse
@@ -21,7 +22,7 @@ class ApiRepositoryImpl : ApiRepository {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://f88f-46-98-183-16.ngrok-free.app/")
+        .baseUrl("https://8407-46-98-183-16.ngrok-free.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
@@ -52,7 +53,7 @@ class ApiRepositoryImpl : ApiRepository {
         service.createManga(token, manga).enqueue(callback)
     }
 
-    override fun updateManga(token: String, manga: MangaRequest, callback: Callback<Void>) {
+    override fun updateManga(token: String, manga: UpdateMangaRequest, callback: Callback<Void>) {
         service.updateManga(token, manga).enqueue(callback)
     }
 

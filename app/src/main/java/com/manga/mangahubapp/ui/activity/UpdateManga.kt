@@ -3,6 +3,7 @@ package com.manga.mangahubapp.ui.activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -16,11 +17,14 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.manga.mangahubapp.R
 import com.manga.mangahubapp.model.enums.Genre
+import com.manga.mangahubapp.model.request.UpdateMangaRequest
 import com.manga.mangahubapp.model.response.MangaResponse
 import com.manga.mangahubapp.network.ApiRepositoryImpl
+import com.manga.mangahubapp.util.Validator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.Clock
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -47,6 +51,9 @@ class UpdateManga : AppCompatActivity() {
     private var updateMangaButton: Button? = null
     private var input: TextView? = null
 
+    private var manga: MangaResponse? = null
+    private val validator = Validator()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_manga)
@@ -67,8 +74,6 @@ class UpdateManga : AppCompatActivity() {
         titleContainer = findViewById(R.id.titleContainer)
         releasedOnContainer = findViewById(R.id.releasedContainer)
         descriptionContainer = findViewById(R.id.descriptionContainer)
-
-
 
         input = TextView(this)
 
@@ -131,7 +136,82 @@ class UpdateManga : AppCompatActivity() {
     }
 
     private fun updateManga() {
-        TODO("Not yet implemented")
+
+        val date = validator.formatDate(releasedOn?.text.toString().trim())
+        if (date == null) {
+            releasedOnContainer?.helperText = "Invalid date of release"
+        }
+
+        val lastUpdateDate = LocalDateTime.now(Clock.systemUTC()).toString()
+
+        if (date != null && lastUpdateDate != null) {
+
+            var updatedManga = UpdateMangaRequest(
+                manga!!.mangaId,
+                title!!.text.toString(),
+                genre!!.selectedItemPosition,
+                description!!.text.toString(),
+                date,
+                lastUpdateDate,
+                "",
+                userId!!.toInt()
+            )
+
+            Log.d("Updated manga", updatedManga.toString())
+
+            apiRepository.updateManga("Bearer " + token, updatedManga, object :
+                Callback<Void> {
+                override fun onResponse(
+                    call: Call<Void>,
+                    response: Response<Void>
+                ) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(
+                            activity, "Manga was updated successfully!",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        val intent = Intent(activity, MangaInfo::class.java)
+                        intent.putExtra("mangaId", mangaId)
+                        startActivity(intent)
+                        activity.finish()
+
+                    } else {
+                        Toast.makeText(
+                            activity, "Something went wrong during updating!",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        val intent = Intent(activity, MangaInfo::class.java)
+                        intent.putExtra("mangaId", mangaId)
+                        startActivity(intent)
+                        activity.finish()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(
+                        activity, "Something went wrong during updating!",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    val intent = Intent(activity, MangaInfo::class.java)
+                    intent.putExtra("mangaId", mangaId)
+                    startActivity(intent)
+                    activity.finish()
+                }
+            })
+        } else {
+            Toast.makeText(
+                activity, "Something went wrong during updating!",
+                Toast.LENGTH_LONG
+            ).show()
+
+            val intent = Intent(activity, MangaInfo::class.java)
+            intent.putExtra("mangaId", mangaId)
+            startActivity(intent)
+            activity.finish()
+        }
     }
 
     private fun getManga() {
@@ -142,9 +222,9 @@ class UpdateManga : AppCompatActivity() {
                 response: Response<MangaResponse>
             ) {
                 if (response.isSuccessful) {
-                    val manga = response.body()
+                    manga = response.body()
                     if (manga != null) {
-                        fillData(manga)
+                        fillData(manga!!)
                     } else {
                         Toast.makeText(activity, "Something went wrong!", Toast.LENGTH_LONG)
                             .show()

@@ -37,13 +37,22 @@ interface ApiService {
     ): Call<UserResponse>
 
     @POST("api/User/update-user-profile")
-    fun updateUser(user: UpdateUserRequest): Call<Void>
+    fun updateUser(
+        @Header("Authorization") token: String,
+        user: UpdateUserRequest
+    ): Call<Void>
 
     @POST("api/Mangas")
-    fun createManga(manga: MangaRequest): Call<Void>
+    fun createManga(
+        @Header("Authorization") token: String,
+        manga: MangaRequest
+    ): Call<Void>
 
     @POST("api/Mangas")
-    fun updateManga(manga: MangaRequest): Call<Void>
+    fun updateManga(
+        @Header("Authorization") token: String,
+        manga: MangaRequest
+    ): Call<Void>
 
     @DELETE("api/Mangas")
     fun deleteManga(

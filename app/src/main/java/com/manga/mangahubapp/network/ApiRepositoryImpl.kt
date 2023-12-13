@@ -44,16 +44,16 @@ class ApiRepositoryImpl : ApiRepository {
         service.getUser(token, userId).enqueue(callback)
     }
 
-    override fun updateUser(user: UpdateUserRequest, callback: Callback<Void>) {
-        service.updateUser(user).enqueue(callback)
+    override fun updateUser(token: String, user: UpdateUserRequest, callback: Callback<Void>) {
+        service.updateUser(token, user).enqueue(callback)
     }
 
-    override fun createManga(manga: MangaRequest, callback: Callback<Void>) {
-        service.createManga(manga).enqueue(callback)
+    override fun createManga(token: String, manga: MangaRequest, callback: Callback<Void>) {
+        service.createManga(token, manga).enqueue(callback)
     }
 
-    override fun updateManga(manga: MangaRequest, callback: Callback<Void>) {
-        service.updateManga(manga).enqueue(callback)
+    override fun updateManga(token: String, manga: MangaRequest, callback: Callback<Void>) {
+        service.updateManga(token, manga).enqueue(callback)
     }
 
     override fun deleteManga(token: String, mangaId: String, callback: Callback<Void>) {
@@ -65,8 +65,7 @@ class ApiRepositoryImpl : ApiRepository {
     }
 
     override fun getMangas(
-        token: String,
-        search: SearchRequest,
+        token: String, search: SearchRequest,
         callback: Callback<List<MangaListItemResponse>>
     ) {
         var genre: String? = null

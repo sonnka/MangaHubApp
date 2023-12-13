@@ -13,15 +13,57 @@ import com.manga.mangahubapp.model.response.UserResponse
 import retrofit2.Callback
 
 interface ApiRepository {
-    fun login(user: LoginRequest, callback: Callback<LoginResponse>)
-    fun register(user: UserRequest, callback: Callback<Void>)
-    fun forgotPassword(email: ForgotPasswordRequest, callback: Callback<Void>)
-    fun getUser(token: String, userId: Int, callback: Callback<UserResponse>)
-    fun updateUser(user: UpdateUserRequest, callback: Callback<Void>)
-    fun createManga(manga: MangaRequest, callback: Callback<Void>)
-    fun updateManga(manga: MangaRequest, callback: Callback<Void>)
-    fun deleteManga(token: String, mangaId: String, callback: Callback<Void>)
-    fun getManga(token: String, mangaId: String, callback: Callback<MangaResponse>)
+    fun login(
+        user: LoginRequest,
+        callback: Callback<LoginResponse>
+    )
+
+    fun register(
+        user: UserRequest,
+        callback: Callback<Void>
+    )
+
+    fun forgotPassword(
+        email: ForgotPasswordRequest,
+        callback: Callback<Void>
+    )
+
+    fun getUser(
+        token: String,
+        userId: Int,
+        callback: Callback<UserResponse>
+    )
+
+    fun updateUser(
+        token: String,
+        user: UpdateUserRequest,
+        callback: Callback<Void>
+    )
+
+    fun createManga(
+        token: String,
+        manga: MangaRequest,
+        callback: Callback<Void>
+    )
+
+    fun updateManga(
+        token: String,
+        manga: MangaRequest,
+        callback: Callback<Void>
+    )
+
+    fun deleteManga(
+        token: String,
+        mangaId: String,
+        callback: Callback<Void>
+    )
+
+    fun getManga(
+        token: String,
+        mangaId: String,
+        callback: Callback<MangaResponse>
+    )
+
     fun getMangas(
         token: String,
         search: SearchRequest,

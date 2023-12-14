@@ -7,6 +7,8 @@ data class UpdateMangaRequest(
 
     val genre: Int,
 
+    val genres: HashMap<Int, String>,
+
     val description: String,
 
     val releasedOn: String,

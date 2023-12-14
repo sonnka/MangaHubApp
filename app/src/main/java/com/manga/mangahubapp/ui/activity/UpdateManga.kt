@@ -53,6 +53,7 @@ class UpdateManga : AppCompatActivity() {
 
     private var manga: MangaResponse? = null
     private val validator = Validator()
+    private var listGenres: HashMap<Int, String> = HashMap<Int, String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +85,10 @@ class UpdateManga : AppCompatActivity() {
         }
 
         val list = Genre.entries.map { g -> g.name }.toMutableList()
+
+        for (g in Genre.entries) {
+            listGenres[g.ordinal] = g.name
+        }
 
         list.add("")
 
@@ -149,7 +154,8 @@ class UpdateManga : AppCompatActivity() {
             var updatedManga = UpdateMangaRequest(
                 manga!!.mangaId,
                 title!!.text.toString(),
-                genre!!.selectedItemPosition,
+                genre!!.selectedItemPosition + 1,
+                listGenres,
                 description!!.text.toString(),
                 date,
                 lastUpdateDate,
@@ -177,6 +183,8 @@ class UpdateManga : AppCompatActivity() {
                         activity.finish()
 
                     } else {
+                        Log.d("Error1", response.code().toString())
+
                         Toast.makeText(
                             activity, "Something went wrong during updating!",
                             Toast.LENGTH_LONG
@@ -190,6 +198,8 @@ class UpdateManga : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("Error2", t.message.toString())
+
                     Toast.makeText(
                         activity, "Something went wrong during updating!",
                         Toast.LENGTH_LONG
@@ -202,6 +212,7 @@ class UpdateManga : AppCompatActivity() {
                 }
             })
         } else {
+            Log.d("Error3", "date is null")
             Toast.makeText(
                 activity, "Something went wrong during updating!",
                 Toast.LENGTH_LONG
@@ -226,16 +237,19 @@ class UpdateManga : AppCompatActivity() {
                     if (manga != null) {
                         fillData(manga!!)
                     } else {
+                        Log.d("Error1", "null manga")
                         Toast.makeText(activity, "Something went wrong!", Toast.LENGTH_LONG)
                             .show()
                     }
                 } else {
+                    Log.d("Error2", response.code().toString())
                     Toast.makeText(activity, "Something went wrong!", Toast.LENGTH_LONG)
                         .show()
                 }
             }
 
             override fun onFailure(call: Call<MangaResponse>, t: Throwable) {
+                Log.d("Error3", t.message.toString())
                 Toast.makeText(activity, "Something went wrong!", Toast.LENGTH_LONG).show()
             }
         })
@@ -249,7 +263,7 @@ class UpdateManga : AppCompatActivity() {
 
         releasedOn!!.setText(date1.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")))
 
-        genre!!.setSelection(manga.genre.toInt())
+        genre!!.setSelection(manga.genre.toInt() - 1)
 
         description!!.setText(manga.description)
     }

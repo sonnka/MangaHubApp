@@ -1,7 +1,7 @@
 package com.manga.mangahubapp.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,6 +52,7 @@ class CreateMangaPage : Fragment() {
 
     private val validator = Validator()
     private var list: List<String> = ArrayList<String>()
+    private var listGenres: HashMap<Int, String> = HashMap<Int, String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +84,7 @@ class CreateMangaPage : Fragment() {
         userId = MainPage.getUserId()
 
         title = v.findViewById(R.id.titleEditText)
-        releasedOn = v.findViewById(R.id.releasedEditText)
+        releasedOn = v.findViewById(R.id.releaseEditText)
         genre = v.findViewById(R.id.genreSpinner)
         description = v.findViewById(R.id.descriptionMangaEditText)
         createMangaButton = v.findViewById(R.id.createMangaButton)
@@ -93,6 +94,16 @@ class CreateMangaPage : Fragment() {
         descriptionContainer = v.findViewById(R.id.descriptionContainer)
 
         input = TextView(this.requireContext())
+
+        for (g in Genre.entries) {
+            listGenres[g.ordinal] = g.name
+        }
+
+        releasedOn.let { r ->
+            r!!.setOnClickListener {
+                onGetDate(r.rootView)
+            }
+        }
 
         createMangaButton.let { u ->
             u!!.setOnClickListener {
@@ -138,6 +149,8 @@ class CreateMangaPage : Fragment() {
             s!!.onItemSelectedListener = itemSelectedListener
         }
 
+        genre!!.setSelection(list.lastIndex)
+
     }
 
     private fun createManga() {
@@ -153,7 +166,8 @@ class CreateMangaPage : Fragment() {
 
             var createManga = MangaRequest(
                 title!!.text.toString(),
-                genre!!.selectedItemPosition,
+                genre!!.selectedItemPosition + 1,
+                listGenres,
                 description!!.text.toString(),
                 date,
                 creationDate,
@@ -171,12 +185,11 @@ class CreateMangaPage : Fragment() {
                 ) {
                     if (response.isSuccessful) {
                         Toast.makeText(
-                            activity.requireContext(), "Manga was updated successfully!",
+                            activity.requireContext(), "Manga was created successfully!",
                             Toast.LENGTH_LONG
                         ).show()
 
-                        val intent = Intent(activity.requireContext(), SearchPage::class.java)
-                        startActivity(intent)
+                        cleanFields()
 
                     } else {
                         Toast.makeText(
@@ -216,8 +229,8 @@ class CreateMangaPage : Fragment() {
         genre!!.setSelection(list.lastIndex)
     }
 
-
-    fun onDate(view: View) {
+    @SuppressLint("SetTextI18n")
+    fun onGetDate(view: View?) {
         val calendar: Calendar = Calendar.getInstance()
         val mYear: Int = calendar.get(Calendar.YEAR)
         val mMonth: Int = calendar.get(Calendar.MONTH)

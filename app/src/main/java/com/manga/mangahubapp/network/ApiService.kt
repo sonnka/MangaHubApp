@@ -44,15 +44,17 @@ interface ApiService {
     ): Call<Void>
 
     @POST("api/Mangas")
+    @Headers("Content-Type: application/json")
     fun createManga(
         @Header("Authorization") token: String,
-        manga: MangaRequest
+        @Body manga: MangaRequest
     ): Call<Void>
 
     @POST("api/Mangas")
+    @Headers("Content-Type: application/json")
     fun updateManga(
         @Header("Authorization") token: String,
-        manga: UpdateMangaRequest
+        @Body manga: UpdateMangaRequest
     ): Call<Void>
 
     @DELETE("api/Mangas")

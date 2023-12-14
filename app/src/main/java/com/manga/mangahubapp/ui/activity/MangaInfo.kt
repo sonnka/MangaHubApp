@@ -92,7 +92,7 @@ class MangaInfo : AppCompatActivity() {
 
     fun fillData(manga: MangaResponse) {
         var date1 = LocalDateTime.parse(manga.releasedOn)
-        var g = Genre.entries[manga.genre.toInt()].name
+        var g = Genre.entries[manga.genre.toInt() - 1].name
 
         title!!.text = manga.title
         releasedOn!!.text =
@@ -111,7 +111,9 @@ class MangaInfo : AppCompatActivity() {
                 if (response.isSuccessful) {
                     Toast.makeText(activity, "Manga was deleted!", Toast.LENGTH_LONG)
                         .show()
-                    val intent = Intent(activity, SearchPage::class.java)
+                    val intent = Intent(activity, MainPage::class.java)
+                    intent.putExtra("userId", userId)
+                    intent.putExtra("token", token)
                     startActivity(intent)
                     activity.finish()
 

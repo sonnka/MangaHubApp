@@ -73,25 +73,51 @@ interface ApiService {
     fun getMangas(
         @Header("Authorization") token: String,
         @Query("SearchRequest") search: String,
-        @Query("Genre") genre: String,
+        @Query("Genre") genre: Int,
         @Query("Rating") rating: Double
     ): Call<List<MangaListItemResponse>>
 
     @GET("api/Mangas/get-all-filter")
     fun getMangas(
         @Header("Authorization") token: String,
-        @Query("Genre") genre: String,
+        @Query("Genre") genre: Int,
         @Query("Rating") rating: Double
     ): Call<List<MangaListItemResponse>>
+
+    @GET("api/Mangas/get-all-filter")
+    fun getMangas(
+        @Header("Authorization") token: String,
+        @Query("Genre") genre: Int,
+        @Query("SearchQuery") search: String
+    ): Call<List<MangaListItemResponse>>
+
 
     @GET("api/Mangas/get-all-filter")
     fun getMangas(
         @Header("Authorization") token: String,
         @Query("Rating") rating: Double,
-        @Query("SearchRequest") search: String
+        @Query("SearchQuery") search: String
     ): Call<List<MangaListItemResponse>>
 
-    @GET("api/Mangas/get-all")
+    @GET("api/Mangas/get-all-filter")
+    fun getMangas(
+        @Header("Authorization") token: String,
+        @Query("SearchQuery") search: String
+    ): Call<List<MangaListItemResponse>>
+
+    @GET("api/Mangas/get-all-filter")
+    fun getMangas(
+        @Header("Authorization") token: String,
+        @Query("Genre") genre: Int
+    ): Call<List<MangaListItemResponse>>
+
+    @GET("api/Mangas/get-all-filter")
+    fun getMangas(
+        @Header("Authorization") token: String,
+        @Query("Rating") rating: Double
+    ): Call<List<MangaListItemResponse>>
+
+    @GET("api/Mangas/get-all-filter")
     fun getMangas(
         @Header("Authorization") token: String
     ): Call<List<MangaListItemResponse>>

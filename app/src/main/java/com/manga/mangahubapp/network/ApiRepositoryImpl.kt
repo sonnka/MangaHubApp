@@ -69,17 +69,32 @@ class ApiRepositoryImpl : ApiRepository {
         token: String, search: SearchRequest,
         callback: Callback<List<MangaListItemResponse>>
     ) {
-        var genre: String? = null
+        var genre: Int? = null
 
         if (search.genre.isNotBlank()) {
-            genre = Genre.valueOf(search.genre).ordinal.toString()
+            genre = Genre.valueOf(search.genre).ordinal
         }
 
-        if (search.searchQuery.isNotBlank() && !genre.isNullOrEmpty()) {
-            service.getMangas(token, search.searchQuery, genre, search.rating)
+        if (search.searchQuery.isNotBlank() && !search.genre.isNullOrEmpty() && search.rating != 0.0) {
+            service.getMangas(token, search.searchQuery, genre!!, search.rating)
                 .enqueue(callback)
-        } else if (search.searchQuery.isNotBlank() && genre.isNullOrEmpty()) {
+        } else if (search.searchQuery.isNotBlank() && search.genre.isNullOrEmpty() && search.rating != 0.0) {
             service.getMangas(token, search.rating, search.searchQuery)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNullOrEmpty() && !search.genre.isNullOrEmpty() && search.rating != 0.0) {
+            service.getMangas(token, genre!!, search.rating)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNotBlank() && !search.genre.isNullOrEmpty() && search.rating == 0.0) {
+            service.getMangas(token, genre!!, search.searchQuery)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNotBlank() && search.genre.isNullOrEmpty() && search.rating == 0.0) {
+            service.getMangas(token, search.searchQuery)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNullOrEmpty() && !search.genre.isNullOrEmpty() && search.rating == 0.0) {
+            service.getMangas(token, genre!!)
+                .enqueue(callback)
+        } else if (search.rating != 0.0) {
+            service.getMangas(token, search.rating)
                 .enqueue(callback)
         } else {
             service.getMangas(token)

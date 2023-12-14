@@ -32,7 +32,7 @@ class MangaAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Log.d("inside", mangaIds!![position].toString())
         holder.mangaId.setText(mangaIds!![position].toString())
-        holder.rating.setText(ratings!![position].toString())
+        holder.rating.setText(ratings!![position].toString() + "/5")
         holder.name.setText(names!![position].toString())
         holder.genre.setText(genres!![position].toString())
         //  holder.image.setImageURI(Uri.parse(images!!.get(position).toString()))
@@ -54,7 +54,7 @@ class MangaAdapter(
         var mangaId: TextView = itemView.findViewById<TextView>(R.id.mangaId)
         var name: TextView = itemView.findViewById<TextView>(R.id.name)
         var rating: TextView = itemView.findViewById<TextView>(R.id.rating)
-        var genre: TextView = itemView.findViewById<TextView>(R.id.genre)
+        var genre: TextView = itemView.findViewById<TextView>(R.id.genreOutput)
         var image: ImageView = itemView.findViewById<ImageView>(R.id.mangaCover)
         var view: View = itemView
 

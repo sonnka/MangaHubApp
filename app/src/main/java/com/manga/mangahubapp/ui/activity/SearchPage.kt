@@ -94,27 +94,6 @@ class SearchPage() : Fragment() {
         rating = v.findViewById(R.id.rating)
         spinner = v.findViewById(R.id.spinner)
 
-        searchButton.let { s ->
-            s!!.setOnClickListener(View.OnClickListener {
-                clearRecycleView()
-                displayAllData()
-            })
-        }
-
-        resetButton.let { s ->
-            s!!.setOnClickListener(View.OnClickListener {
-                searchField.let { s ->
-                    s!!.setText("")
-                }
-                rating.let { r ->
-                    r!!.setText("")
-                }
-
-                clearRecycleView()
-                displayAllData()
-            })
-        }
-
         val list = Genre.entries.map { g -> g.name }.toMutableList()
 
         list.add("")
@@ -152,6 +131,33 @@ class SearchPage() : Fragment() {
             s!!.onItemSelectedListener = itemSelectedListener
         }
 
+        searchButton.let { s ->
+            s!!.setOnClickListener(View.OnClickListener {
+                clearRecycleView()
+                displayAllData()
+            })
+        }
+
+        resetButton.let { s ->
+            s!!.setOnClickListener(View.OnClickListener {
+                searchField.let { s ->
+                    s!!.setText("")
+                }
+                rating.let { r ->
+                    r!!.setText("")
+                }
+
+                spinner!!.setSelection(list.lastIndex)
+
+                clearRecycleView()
+                displayAllData()
+            })
+        }
+
+
+
+        spinner!!.setSelection(list.lastIndex)
+
         displayAllData()
     }
 
@@ -169,23 +175,20 @@ class SearchPage() : Fragment() {
     private fun displayAllData() {
 
         var search: SearchRequest? = null
-        if (rating!!.text.isEmpty() || genre!!.text.isEmpty() || searchField!!.text.isEmpty()) {
-            Log.d("v1", "dddddd")
-            search = SearchRequest(
-                "",
-                "",
-                null,
-                0.0
-            )
-        } else {
-            Log.d("v2", "dddddd")
-            search = SearchRequest(
-                searchField!!.text.toString(),
-                genre!!.text.toString(),
-                null,
-                rating!!.text.toString().toDouble()
-            )
+
+        var r: Double = 0.0
+
+        if (!rating!!.text.isNullOrEmpty()) {
+            r = rating!!.text.toString().toDouble()
         }
+
+        search = SearchRequest(
+            searchField!!.text.toString(),
+            genre!!.text.toString(),
+            null,
+            r
+        )
+
         Log.d("Request ", token + " \n " + search.toString())
         apiRepository.getMangas("Bearer " + token, search, object :
             Callback<List<MangaListItemResponse>> {
@@ -196,7 +199,10 @@ class SearchPage() : Fragment() {
                 if (response.isSuccessful) {
                     val dataList = response.body()
                     if (dataList != null) {
+                        clearRecycleView()
+                        setAdapterOnRecycleView()
                         fillData(dataList)
+                        setAdapterOnRecycleView()
                         Log.d("List ", dataList.toString())
 
                     } else {
@@ -234,7 +240,7 @@ class SearchPage() : Fragment() {
             for (item in dataList) {
                 mangaIds!!.add(item.mangaId)
                 names!!.add(item.title)
-                genres!!.add(Genre.entries[item.genre.toInt()].name)
+                genres!!.add(Genre.entries[item.genre.toInt() - 1].name)
                 ratings!!.add(item.rating)
                 //images!!.add(item.coverImage.toString())
                 images!!.add("")

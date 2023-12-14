@@ -38,9 +38,10 @@ interface ApiService {
     ): Call<UserResponse>
 
     @POST("api/User/update-user-profile")
+    @Headers("Content-Type: application/json")
     fun updateUser(
         @Header("Authorization") token: String,
-        user: UpdateUserRequest
+        @Body user: UpdateUserRequest
     ): Call<Void>
 
     @POST("api/Mangas")

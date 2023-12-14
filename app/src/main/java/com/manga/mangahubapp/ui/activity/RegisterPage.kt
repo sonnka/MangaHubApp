@@ -5,13 +5,14 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -53,7 +54,7 @@ class RegisterPage : AppCompatActivity() {
     private var emailContainer: TextInputLayout? = null
     private val PICK_IMAGE = 1
     var avatarUri: String? = null
-    var avatarTemp: ByteArray? = null
+    var image: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -209,7 +210,13 @@ class RegisterPage : AppCompatActivity() {
                 e.printStackTrace()
             }
             avatar!!.setImageURI(selectedImageUri)
-            //avatarTemp = getAvatar(avatar)
+
+
+            val bitmap: Bitmap =
+                MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
+
+            image = convertBitmapToBase64(bitmap)
+
             avatarUri = uri.toString()
             activity.contentResolver
                 .takePersistableUriPermission(
@@ -219,13 +226,25 @@ class RegisterPage : AppCompatActivity() {
         }
     }
 
-    private fun getAvatar(avatar: ImageView?): ByteArray {
-        var bitmap = avatar?.drawable?.toBitmap()
+    private fun convertBitmapToBase64(bitmap: Bitmap): String {
         val outputStream = ByteArrayOutputStream()
-        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        val byteArray: ByteArray = outputStream.toByteArray()
-        return byteArray;
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream) // Adjust quality as needed
+        val byteArray = outputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
+
+
+//    private fun getAvatar(avatar: ImageView?): String? {
+//        val drawable = avatar!!.drawable
+//        if (drawable != null) {
+//            val bitmap = (drawable).toBitmap()
+//            val byteArrayOutputStream = ByteArrayOutputStream()
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+//            val byteArray = byteArrayOutputStream.toByteArray()
+//            return Base64.encodeToString(byteArray, Base64.DEFAULT)
+//        }
+//        return null
+//    }
 
 
     fun register(view: View) {
@@ -248,7 +267,7 @@ class RegisterPage : AppCompatActivity() {
                 firstNameInput?.text.toString().trim(),
                 lastNameInput?.text.toString().trim(),
                 descriptionInput?.text.toString().trim(),
-                phone, date, "", true
+                phone, date, image!!, true
             )
 
             Log.d("User", user.toString())
@@ -261,6 +280,7 @@ class RegisterPage : AppCompatActivity() {
                         response: Response<Void>
                     ) {
                         if (!response.isSuccessful) {
+                            Log.d("Error1", response.code().toString())
                             AlertDialog.Builder(activity)
                                 .setTitle("Sing up")
                                 .setMessage("Something went wrong. Try again later.")
@@ -285,7 +305,7 @@ class RegisterPage : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<Void>, t: Throwable) {
-                        Log.d("Error", t.message.toString())
+                        Log.d("Error2", t.message.toString())
                         AlertDialog.Builder(activity)
                             .setTitle("Sing up")
                             .setMessage("Something went wrong. Try again later.")

@@ -242,8 +242,7 @@ class SearchPage() : Fragment() {
                 names!!.add(item.title)
                 genres!!.add(Genre.entries[item.genre.toInt() - 1].name)
                 ratings!!.add(item.rating)
-                //images!!.add(item.coverImage.toString())
-                images!!.add("")
+                images!!.add(item.coverImage.toString())
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.manga.mangahubapp.network
 
+import android.util.Log
 import com.manga.mangahubapp.model.enums.Genre
 import com.manga.mangahubapp.model.request.ForgotPasswordRequest
 import com.manga.mangahubapp.model.request.LoginRequest
@@ -72,8 +73,10 @@ class ApiRepositoryImpl : ApiRepository {
         var genre: Int? = null
 
         if (search.genre.isNotBlank()) {
-            genre = Genre.valueOf(search.genre).ordinal
+            genre = Genre.valueOf(search.genre.toString()).ordinal + 1
         }
+
+        Log.d("Search: ", genre.toString())
 
         if (search.searchQuery.isNotBlank() && !search.genre.isNullOrEmpty() && search.rating != 0.0) {
             service.getMangas(token, search.searchQuery, genre!!, search.rating)

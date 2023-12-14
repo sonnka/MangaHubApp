@@ -3,7 +3,12 @@ package com.manga.mangahubapp.ui.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import android.widget.ImageView
@@ -13,12 +18,14 @@ import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.manga.mangahubapp.R
+import com.manga.mangahubapp.model.request.UpdateUserRequest
 import com.manga.mangahubapp.model.response.UserResponse
 import com.manga.mangahubapp.network.ApiRepositoryImpl
 import com.manga.mangahubapp.util.Validator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.net.URI
 import java.net.URISyntaxException
 import java.time.LocalDateTime
@@ -35,24 +42,20 @@ class UpdateUser : AppCompatActivity() {
     private var datePickerDialog: DatePickerDialog? = null
     private val validator = Validator()
 
-    private var firstNameInput: TextInputEditText? = null
-    private var lastNameInput: TextInputEditText? = null
     private var avatar: ImageView? = null
     private var descriptionInput: TextInputEditText? = null
-    private var phoneNumber: TextInputEditText? = null
     private var birthDateInput: TextInputEditText? = null
     private var emailInput: TextInputEditText? = null
 
-    private var firstNameContainer: TextInputLayout? = null
-    private var lastNameContainer: TextInputLayout? = null
+
     private var descriptionContainer: TextInputLayout? = null
-    private var phoneContainer: TextInputLayout? = null
     private var birthDateContainer: TextInputLayout? = null
     private var emailContainer: TextInputLayout? = null
 
     private val PICK_IMAGE = 1
     private var avatarUri: String? = null
     private var avatarTemp: ByteArray? = null
+    var image: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,18 +67,11 @@ class UpdateUser : AppCompatActivity() {
         userId = MainPage.getUserId()
         token = MainPage.getToken()
 
-        firstNameInput = findViewById<TextInputEditText>(R.id.firstNameEditText)
-        lastNameInput = findViewById<TextInputEditText>(R.id.lastNameEditText)
         descriptionInput = findViewById<TextInputEditText>(R.id.descriptionEditText)
-        phoneNumber = findViewById<TextInputEditText>(R.id.phoneEditText)
         birthDateInput = findViewById<TextInputEditText>(R.id.dateEditText)
         emailInput = findViewById<TextInputEditText>(R.id.emailEditText)
-        avatar = findViewById<ImageView>(R.id.avatar)
 
-        firstNameContainer = findViewById<TextInputLayout>(R.id.firstNameContainer)
-        lastNameContainer = findViewById<TextInputLayout>(R.id.lastNameContainer)
         descriptionContainer = findViewById<TextInputLayout>(R.id.descriptionContainer)
-        phoneContainer = findViewById<TextInputLayout>(R.id.phoneContainer)
         birthDateContainer = findViewById<TextInputLayout>(R.id.dateContainer)
         emailContainer = findViewById<TextInputLayout>(R.id.emailContainer)
         avatar = findViewById<ImageView>(R.id.avatar)
@@ -133,35 +129,24 @@ class UpdateUser : AppCompatActivity() {
     fun fillData(user: UserResponse) {
         var date1 = LocalDateTime.parse(user.birthDate);
 
-        firstNameInput!!.setText(user.firstName)
-        lastNameInput!!.setText(user.lastName)
+        image = user.avatar
+
         emailInput!!.setText(user.email)
         birthDateInput!!.setText(date1.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")))
-        phoneNumber!!.setText(user.phoneNumber)
         descriptionInput!!.setText(user.description)
+
+        val imageBytes = Base64.decode(user.avatar, Base64.DEFAULT)
+        val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        avatar!!.setImageBitmap(decodedImage)
     }
 
     private fun validate() {
-        firstNameInput?.let { u ->
-            u.doOnTextChanged { _, _, _, _ ->
-                firstNameContainer?.let { c -> c.helperText = validateFirstName() }
-            }
-        }
-        lastNameInput?.let { u ->
-            u.doOnTextChanged { _, _, _, _ ->
-                lastNameContainer?.let { c -> c.helperText = validateLastName() }
-            }
-        }
         descriptionInput?.let { u ->
             u.doOnTextChanged { _, _, _, _ ->
                 descriptionContainer?.let { c -> c.helperText = validateDescription() }
             }
         }
-        phoneNumber?.let { u ->
-            u.doOnTextChanged { _, _, _, _ ->
-                phoneContainer?.let { c -> c.helperText = validatePhone() }
-            }
-        }
+
         birthDateInput?.let { u ->
             u.doOnTextChanged { _, _, _, _ ->
                 birthDateContainer?.let { c -> c.helperText = validateDate() }
@@ -175,11 +160,11 @@ class UpdateUser : AppCompatActivity() {
     }
 
     private fun validateFirstName(): String {
-        return validator.validateFirstName(firstNameInput?.text.toString().trim())
+        return validator.validateFirstName("Testttttt")
     }
 
     private fun validateLastName(): String {
-        return validator.validateLastName(lastNameInput?.text.toString().trim())
+        return validator.validateLastName("Testttttt")
     }
 
     private fun validateDescription(): String {
@@ -187,7 +172,7 @@ class UpdateUser : AppCompatActivity() {
     }
 
     private fun validatePhone(): String {
-        return validator.validatePhone(phoneNumber?.text.toString().trim())
+        return validator.validatePhone("+380661936087")
     }
 
     private fun validateDate(): String {
@@ -210,7 +195,13 @@ class UpdateUser : AppCompatActivity() {
                 e.printStackTrace()
             }
             avatar!!.setImageURI(selectedImageUri)
-            //avatarTemp = getAvatar(avatar)
+
+
+            val bitmap: Bitmap =
+                MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
+
+            image = convertBitmapToBase64(bitmap)
+
             avatarUri = uri.toString()
             activity.contentResolver
                 .takePersistableUriPermission(
@@ -218,6 +209,13 @@ class UpdateUser : AppCompatActivity() {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
         }
+    }
+
+    private fun convertBitmapToBase64(bitmap: Bitmap): String {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream) // Adjust quality as needed
+        val byteArray = outputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
 
     @SuppressLint("SetTextI18n")
@@ -245,5 +243,66 @@ class UpdateUser : AppCompatActivity() {
             }, mYear, mMonth, mDay
         )
         datePickerDialog!!.show()
+    }
+
+
+    fun update(view: View) {
+        val phone = validator.formatPhoneNumber("+380661936087")
+
+        val date = validator.formatDate(birthDateInput?.text.toString().trim())
+        if (date == null) {
+            birthDateContainer?.helperText = "Invalid date of birth"
+        }
+
+        if (phone != null && date != null) {
+
+            val user = UpdateUserRequest(
+                userId!!.toInt(),
+                image!!,
+                descriptionInput?.text.toString().trim(),
+                true,
+                date,
+                emailInput?.text.toString().trim()
+            )
+
+            Log.d("User", user.toString())
+
+            apiRepository.updateUser("Bearer " + token, user,
+                object :
+                    Callback<Void> {
+                    override fun onResponse(
+                        call: Call<Void>,
+                        response: Response<Void>
+                    ) {
+                        if (!response.isSuccessful) {
+                            Log.d("Error1", response.code().toString())
+                            Toast.makeText(
+                                activity,
+                                "Something went wrong during updating!",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        } else {
+                            Toast.makeText(activity, "User is updated!", Toast.LENGTH_LONG)
+                                .show()
+                            val intent = Intent(activity, MainPage::class.java)
+                            intent.putExtra("userId", userId)
+                            intent.putExtra("token", token)
+                            startActivity(intent)
+                            activity.finish()
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Toast.makeText(
+                            activity,
+                            "Something went wrong during updating!",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
+                })
+        }
     }
 }

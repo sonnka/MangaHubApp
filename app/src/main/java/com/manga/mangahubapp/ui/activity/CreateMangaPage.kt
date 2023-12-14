@@ -2,7 +2,11 @@ package com.manga.mangahubapp.ui.activity
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +15,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -25,6 +31,9 @@ import com.manga.mangahubapp.util.Validator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.net.URI
+import java.net.URISyntaxException
 import java.time.Clock
 import java.time.LocalDateTime
 import java.util.Calendar
@@ -53,6 +62,12 @@ class CreateMangaPage : Fragment() {
     private val validator = Validator()
     private var list: List<String> = ArrayList<String>()
     private var listGenres: HashMap<Int, String> = HashMap<Int, String>()
+
+    private val PICK_IMAGE = 1
+    private var avatarUri: String? = null
+    private var avatarTemp: ByteArray? = null
+    private var avatar: ImageView? = null
+    var image: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +107,16 @@ class CreateMangaPage : Fragment() {
         titleContainer = v.findViewById(R.id.titleContainer)
         releasedOnContainer = v.findViewById(R.id.releasedContainer)
         descriptionContainer = v.findViewById(R.id.descriptionContainer)
+
+        avatar = v.findViewById<ImageView>(R.id.coverManga)
+
+        avatar.let { a ->
+            a!!.setOnClickListener { v ->
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                intent.type = "image/*"
+                startActivityForResult(intent, PICK_IMAGE)
+            }
+        }
 
         input = TextView(this.requireContext())
 
@@ -171,7 +196,7 @@ class CreateMangaPage : Fragment() {
                 description!!.text.toString(),
                 date,
                 creationDate,
-                "",
+                image!!,
                 userId!!.toInt()
             )
 
@@ -255,4 +280,42 @@ class CreateMangaPage : Fragment() {
         )
         datePickerDialog!!.show()
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == AppCompatActivity.RESULT_OK && requestCode == PICK_IMAGE) {
+            val selectedImageUri = data?.data
+            var uri: URI? = null
+            try {
+                uri = URI(selectedImageUri.toString())
+            } catch (e: URISyntaxException) {
+                e.printStackTrace()
+            }
+            avatar!!.setImageURI(selectedImageUri)
+
+
+            val bitmap: Bitmap =
+                MediaStore.Images.Media.getBitmap(
+                    this.requireContext().contentResolver,
+                    selectedImageUri
+                )
+
+            image = convertBitmapToBase64(bitmap)
+
+            avatarUri = uri.toString()
+            this.requireContext().contentResolver
+                .takePersistableUriPermission(
+                    selectedImageUri!!,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+        }
+    }
+
+    private fun convertBitmapToBase64(bitmap: Bitmap): String {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream) // Adjust quality as needed
+        val byteArray = outputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
+    }
+
 }

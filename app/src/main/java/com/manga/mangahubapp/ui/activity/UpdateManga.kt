@@ -2,13 +2,18 @@ package com.manga.mangahubapp.ui.activity
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +29,9 @@ import com.manga.mangahubapp.util.Validator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.net.URI
+import java.net.URISyntaxException
 import java.time.Clock
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -55,6 +63,12 @@ class UpdateManga : AppCompatActivity() {
     private val validator = Validator()
     private var listGenres: HashMap<Int, String> = HashMap<Int, String>()
 
+    private val PICK_IMAGE = 1
+    private var avatarUri: String? = null
+    private var avatarTemp: ByteArray? = null
+    private var avatar: ImageView? = null
+    var image: String? = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_manga)
@@ -75,6 +89,16 @@ class UpdateManga : AppCompatActivity() {
         titleContainer = findViewById(R.id.titleContainer)
         releasedOnContainer = findViewById(R.id.releasedContainer)
         descriptionContainer = findViewById(R.id.descriptionContainer)
+
+        avatar = findViewById<ImageView>(R.id.coverManga)
+
+        avatar.let { a ->
+            a!!.setOnClickListener { v ->
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                intent.type = "image/*"
+                startActivityForResult(intent, PICK_IMAGE)
+            }
+        }
 
         input = TextView(this)
 
@@ -159,7 +183,7 @@ class UpdateManga : AppCompatActivity() {
                 description!!.text.toString(),
                 date,
                 lastUpdateDate,
-                "",
+                image!!,
                 userId!!.toInt()
             )
 
@@ -259,6 +283,8 @@ class UpdateManga : AppCompatActivity() {
         var date1 = LocalDateTime.parse(manga.releasedOn)
         var g = Genre.entries[manga.genre.toInt()].name
 
+        image = manga.coverImage
+
         title!!.setText(manga.title)
 
         releasedOn!!.setText(date1.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")))
@@ -266,6 +292,10 @@ class UpdateManga : AppCompatActivity() {
         genre!!.setSelection(manga.genre.toInt() - 1)
 
         description!!.setText(manga.description)
+
+        val imageBytes = Base64.decode(manga.coverImage, Base64.DEFAULT)
+        val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        avatar!!.setImageBitmap(decodedImage)
     }
 
 
@@ -294,4 +324,39 @@ class UpdateManga : AppCompatActivity() {
         )
         datePickerDialog!!.show()
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+            val selectedImageUri = data?.data
+            var uri: URI? = null
+            try {
+                uri = URI(selectedImageUri.toString())
+            } catch (e: URISyntaxException) {
+                e.printStackTrace()
+            }
+            avatar!!.setImageURI(selectedImageUri)
+
+
+            val bitmap: Bitmap =
+                MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
+
+            image = convertBitmapToBase64(bitmap)
+
+            avatarUri = uri.toString()
+            activity.contentResolver
+                .takePersistableUriPermission(
+                    selectedImageUri!!,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+        }
+    }
+
+    private fun convertBitmapToBase64(bitmap: Bitmap): String {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream) // Adjust quality as needed
+        val byteArray = outputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
+    }
+
 }

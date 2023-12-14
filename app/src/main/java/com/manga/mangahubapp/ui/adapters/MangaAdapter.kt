@@ -2,6 +2,8 @@ package com.manga.mangahubapp.ui.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +37,9 @@ class MangaAdapter(
         holder.rating.setText(ratings!![position].toString() + "/5")
         holder.name.setText(names!![position].toString())
         holder.genre.setText(genres!![position].toString())
+        val imageBytes = Base64.decode(images!!.get(position).toString(), Base64.DEFAULT)
+        val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        holder.image.setImageBitmap(decodedImage)
         //  holder.image.setImageURI(Uri.parse(images!!.get(position).toString()))
         holder.view.setOnClickListener { v ->
             val txt = v.findViewById<TextView>(R.id.mangaId)

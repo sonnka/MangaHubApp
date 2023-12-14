@@ -1,10 +1,13 @@
 package com.manga.mangahubapp.ui.activity
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -33,6 +36,7 @@ class ProfilePage : Fragment() {
     private val apiRepository = ApiRepositoryImpl()
     private var editUserButton: MaterialButton? = null
     private var signout: TextView? = null
+    private var avatar: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +67,8 @@ class ProfilePage : Fragment() {
 
         editUserButton = v.findViewById(R.id.editUserButton)
         signout = v.findViewById(R.id.singOut)
+
+        avatar = v.findViewById(R.id.avatar)
 
         editUserButton.let { e ->
             e!!.setOnClickListener {
@@ -116,6 +122,10 @@ class ProfilePage : Fragment() {
         date!!.text = "Date of birth: " + date1.format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))
         phone!!.text = "Phone: " + user.phoneNumber
         description!!.text = "Description: " + user.description
+
+        val imageBytes = Base64.decode(user.avatar, Base64.DEFAULT)
+        val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        avatar!!.setImageBitmap(decodedImage)
     }
 
     companion object {

@@ -1,8 +1,11 @@
 package com.manga.mangahubapp.ui.activity
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +32,7 @@ class MangaInfo : AppCompatActivity() {
     private var description: TextView? = null
     private var editMangaButton: Button? = null
     private var deleteMangaButton: Button? = null
+    private var avatar: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,8 @@ class MangaInfo : AppCompatActivity() {
         description = findViewById(R.id.descriptionManga)
         editMangaButton = findViewById(R.id.editMangaButton)
         deleteMangaButton = findViewById(R.id.deleteMangaButton)
+
+        avatar = findViewById(R.id.coverManga)
 
         editMangaButton.let { e ->
             e!!.setOnClickListener {
@@ -99,6 +105,10 @@ class MangaInfo : AppCompatActivity() {
             "Date of release: " + date1.format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))
         genre!!.text = "Genre: " + g
         description!!.text = "Description: " + manga.description
+
+        val imageBytes = Base64.decode(manga.coverImage, Base64.DEFAULT)
+        val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        avatar!!.setImageBitmap(decodedImage)
     }
 
     private fun deleteManga() {

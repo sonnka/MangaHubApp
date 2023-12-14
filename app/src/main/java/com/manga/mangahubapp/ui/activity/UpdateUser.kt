@@ -258,11 +258,14 @@ class UpdateUser : AppCompatActivity() {
 
             val user = UpdateUserRequest(
                 userId!!.toInt(),
-                image!!,
+                "Tessssstttt",
+                "Testttttttt",
                 descriptionInput?.text.toString().trim(),
+                "+380661936087",
                 true,
                 date,
-                emailInput?.text.toString().trim()
+                emailInput?.text.toString().trim(),
+                image!!
             )
 
             Log.d("User", user.toString())

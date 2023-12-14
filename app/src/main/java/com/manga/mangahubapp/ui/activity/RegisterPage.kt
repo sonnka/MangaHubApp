@@ -36,20 +36,14 @@ class RegisterPage : AppCompatActivity() {
     private val validator = Validator()
     private var loginInput: TextInputEditText? = null
     private var passwordInput: TextInputEditText? = null
-    private var firstNameInput: TextInputEditText? = null
-    private var lastNameInput: TextInputEditText? = null
     private var avatar: ImageView? = null
     private var descriptionInput: TextInputEditText? = null
-    private var phoneNumber: TextInputEditText? = null
     private var datePickerDialog: DatePickerDialog? = null
     private var birthDateInput: TextInputEditText? = null
     private var emailInput: TextInputEditText? = null
     private var loginContainer: TextInputLayout? = null
     private var passwordContainer: TextInputLayout? = null
-    private var firstNameContainer: TextInputLayout? = null
-    private var lastNameContainer: TextInputLayout? = null
     private var descriptionContainer: TextInputLayout? = null
-    private var phoneContainer: TextInputLayout? = null
     private var birthDateContainer: TextInputLayout? = null
     private var emailContainer: TextInputLayout? = null
     private val PICK_IMAGE = 1
@@ -65,20 +59,14 @@ class RegisterPage : AppCompatActivity() {
     private fun init() {
         loginInput = findViewById<TextInputEditText>(R.id.loginEditText)
         passwordInput = findViewById<TextInputEditText>(R.id.passwordEditText)
-        firstNameInput = findViewById<TextInputEditText>(R.id.firstNameEditText)
-        lastNameInput = findViewById<TextInputEditText>(R.id.lastNameEditText)
         descriptionInput = findViewById<TextInputEditText>(R.id.descriptionEditText)
-        phoneNumber = findViewById<TextInputEditText>(R.id.phoneEditText)
         birthDateInput = findViewById<TextInputEditText>(R.id.dateEditText)
         emailInput = findViewById<TextInputEditText>(R.id.emailEditText)
         avatar = findViewById<ImageView>(R.id.avatar)
 
         loginContainer = findViewById<TextInputLayout>(R.id.loginContainer)
         passwordContainer = findViewById<TextInputLayout>(R.id.passwordContainer)
-        firstNameContainer = findViewById<TextInputLayout>(R.id.firstNameContainer)
-        lastNameContainer = findViewById<TextInputLayout>(R.id.lastNameContainer)
         descriptionContainer = findViewById<TextInputLayout>(R.id.descriptionContainer)
-        phoneContainer = findViewById<TextInputLayout>(R.id.phoneContainer)
         birthDateContainer = findViewById<TextInputLayout>(R.id.dateContainer)
         emailContainer = findViewById<TextInputLayout>(R.id.emailContainer)
         avatar = findViewById<ImageView>(R.id.avatar)
@@ -106,24 +94,9 @@ class RegisterPage : AppCompatActivity() {
                 passwordContainer?.let { c -> c.helperText = validatePassword() }
             }
         }
-        firstNameInput?.let { u ->
-            u.doOnTextChanged { _, _, _, _ ->
-                firstNameContainer?.let { c -> c.helperText = validateFirstName() }
-            }
-        }
-        lastNameInput?.let { u ->
-            u.doOnTextChanged { _, _, _, _ ->
-                lastNameContainer?.let { c -> c.helperText = validateLastName() }
-            }
-        }
         descriptionInput?.let { u ->
             u.doOnTextChanged { _, _, _, _ ->
                 descriptionContainer?.let { c -> c.helperText = validateDescription() }
-            }
-        }
-        phoneNumber?.let { u ->
-            u.doOnTextChanged { _, _, _, _ ->
-                phoneContainer?.let { c -> c.helperText = validatePhone() }
             }
         }
         birthDateInput?.let { u ->
@@ -148,11 +121,11 @@ class RegisterPage : AppCompatActivity() {
     }
 
     private fun validateFirstName(): String {
-        return validator.validateFirstName(firstNameInput?.text.toString().trim())
+        return validator.validateFirstName("Testttt")
     }
 
     private fun validateLastName(): String {
-        return validator.validateLastName(lastNameInput?.text.toString().trim())
+        return validator.validateLastName("Testttttt")
     }
 
     private fun validateDescription(): String {
@@ -160,7 +133,7 @@ class RegisterPage : AppCompatActivity() {
     }
 
     private fun validatePhone(): String {
-        return validator.validatePhone(phoneNumber?.text.toString().trim())
+        return validator.validatePhone("+380661936087")
     }
 
     private fun validateDate(): String {
@@ -248,10 +221,7 @@ class RegisterPage : AppCompatActivity() {
 
 
     fun register(view: View) {
-        val phone = validator.formatPhoneNumber(phoneNumber?.text.toString().trim())
-        if (phone == null) {
-            phoneContainer?.helperText = "Invalid phone number"
-        }
+        val phone = validator.formatPhoneNumber("+380661936087")
 
         val date = validator.formatDate(birthDateInput?.text.toString().trim())
         if (date == null) {
@@ -264,8 +234,8 @@ class RegisterPage : AppCompatActivity() {
                 loginInput?.text.toString().trim(),
                 passwordInput?.text.toString().trim(),
                 emailInput?.text.toString().trim(),
-                firstNameInput?.text.toString().trim(),
-                lastNameInput?.text.toString().trim(),
+                "Testtttttttt",
+                "Testttttttttt",
                 descriptionInput?.text.toString().trim(),
                 phone, date, image!!, true
             )

@@ -27,11 +27,8 @@ class ProfilePage : Fragment() {
     private val activity: Fragment = this@ProfilePage
     private var token: String? = null
     private var userId: String? = null
-    private var firstName: TextView? = null
-    private var lastName: TextView? = null
     private var email: TextView? = null
     private var date: TextView? = null
-    private var phone: TextView? = null
     private var description: TextView? = null
     private val apiRepository = ApiRepositoryImpl()
     private var editUserButton: MaterialButton? = null
@@ -58,11 +55,8 @@ class ProfilePage : Fragment() {
         userId = MainPage.getUserId()
         token = MainPage.getToken()
 
-        firstName = v.findViewById(R.id.firstNameText)
-        lastName = v.findViewById(R.id.lastNameText)
         email = v.findViewById(R.id.emailText)
         date = v.findViewById(R.id.dateOfBirthText)
-        phone = v.findViewById(R.id.phoneText)
         description = v.findViewById(R.id.descriptionText)
 
         editUserButton = v.findViewById(R.id.editUserButton)
@@ -116,11 +110,8 @@ class ProfilePage : Fragment() {
     fun fillData(user: UserResponse) {
         var date1 = LocalDateTime.parse(user.birthDate);
 
-        firstName!!.text = user.firstName
-        lastName!!.text = user.lastName
         email!!.text = "Email: " + user.email
         date!!.text = "Date of birth: " + date1.format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))
-        phone!!.text = "Phone: " + user.phoneNumber
         description!!.text = "Description: " + user.description
 
         val imageBytes = Base64.decode(user.avatar, Base64.DEFAULT)

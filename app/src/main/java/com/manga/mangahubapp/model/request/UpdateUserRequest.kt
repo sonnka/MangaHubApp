@@ -3,13 +3,19 @@ package com.manga.mangahubapp.model.request
 data class UpdateUserRequest(
     val userId: Int,
 
-    val avatar: String,
+    var firstName: String,
+
+    var lastName: String,
 
     val description: String,
+
+    var phoneNumber: String,
 
     val showConfidentialInformation: Boolean,
 
     val birthDate: String,
 
-    val email: String
+    val email: String,
+
+    val avatar: String
 )

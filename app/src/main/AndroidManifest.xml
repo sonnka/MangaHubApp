@@ -23,7 +23,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MangaHubApp"
+        android:theme="@style/Base.Theme.MangaHubApp"
         tools:targetApi="31">
         <activity
             android:name=".ui.activity.ForgotPassword"
@@ -42,6 +42,27 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.MainPage"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.CreateMangaPage"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.SearchPage"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ProfilePage"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.MangaInfo"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ProfileEditPage"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.UpdateUser"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.UpdateManga"
             android:exported="false" />
 
         <meta-data

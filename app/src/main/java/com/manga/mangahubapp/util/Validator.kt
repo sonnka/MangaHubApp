@@ -35,6 +35,26 @@ class Validator {
         }
     }
 
+    fun formatDateTime(date: String): String? {
+        try {
+            date.trim()
+            val inputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+            val localDate = LocalDate.parse(date, inputFormat)
+
+            val currentTime = ZonedDateTime.now(ZoneId.of("UTC"))
+
+            val combinedDateTime =
+                ZonedDateTime.of(localDate, currentTime.toLocalTime(), ZoneId.of("UTC"))
+
+            val outputFormat = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+
+            return combinedDateTime.format(outputFormat)
+        } catch (e: Exception) {
+            return null
+        }
+    }
+
     fun validatePhone(phoneNumber: String): String {
         val phone = formatPhoneNumber(phoneNumber) ?: return "Invalid phone number"
         if (phone == "") {

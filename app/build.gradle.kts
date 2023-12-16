@@ -52,6 +52,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     //Phone number
     implementation("com.fredporciuncula:phonemoji:1.5.2")
+    //JWT
+    implementation("com.auth0:java-jwt:3.18.1")
     // Tests
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

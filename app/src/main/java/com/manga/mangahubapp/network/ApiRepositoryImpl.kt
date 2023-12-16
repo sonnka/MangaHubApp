@@ -1,9 +1,18 @@
 package com.manga.mangahubapp.network
 
-import com.manga.mangahubapp.model.ForgotPasswordRequest
-import com.manga.mangahubapp.model.LoginRequest
-import com.manga.mangahubapp.model.LoginResponse
-import com.manga.mangahubapp.model.UserRequest
+import android.util.Log
+import com.manga.mangahubapp.model.enums.Genre
+import com.manga.mangahubapp.model.request.ForgotPasswordRequest
+import com.manga.mangahubapp.model.request.LoginRequest
+import com.manga.mangahubapp.model.request.MangaRequest
+import com.manga.mangahubapp.model.request.SearchRequest
+import com.manga.mangahubapp.model.request.UpdateMangaRequest
+import com.manga.mangahubapp.model.request.UpdateUserRequest
+import com.manga.mangahubapp.model.request.UserRequest
+import com.manga.mangahubapp.model.response.LoginResponse
+import com.manga.mangahubapp.model.response.MangaListItemResponse
+import com.manga.mangahubapp.model.response.MangaResponse
+import com.manga.mangahubapp.model.response.UserResponse
 import okhttp3.OkHttpClient
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -14,7 +23,7 @@ class ApiRepositoryImpl : ApiRepository {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://56d7-46-98-183-225.ngrok-free.app/")
+        .baseUrl("https://9753-46-98-183-16.ngrok-free.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
@@ -33,9 +42,66 @@ class ApiRepositoryImpl : ApiRepository {
         service.forgotPassword(email).enqueue(callback)
     }
 
+    override fun getUser(token: String, userId: Int, callback: Callback<UserResponse>) {
+        service.getUser(token, userId).enqueue(callback)
+    }
 
-//
-//    fun fetchDataFromUrl(url: String, callback: Callback<Any>) {
-//        service.fetchData(url).enqueue(callback)
-//    }
+    override fun updateUser(token: String, user: UpdateUserRequest, callback: Callback<Void>) {
+        service.updateUser(token, user).enqueue(callback)
+    }
+
+    override fun createManga(token: String, manga: MangaRequest, callback: Callback<Void>) {
+        service.createManga(token, manga).enqueue(callback)
+    }
+
+    override fun updateManga(token: String, manga: UpdateMangaRequest, callback: Callback<Void>) {
+        service.updateManga(token, manga).enqueue(callback)
+    }
+
+    override fun deleteManga(token: String, mangaId: String, callback: Callback<Void>) {
+        service.deleteManga(token, mangaId).enqueue(callback)
+    }
+
+    override fun getManga(token: String, mangaId: String, callback: Callback<MangaResponse>) {
+        service.getManga(token, mangaId).enqueue(callback)
+    }
+
+    override fun getMangas(
+        token: String, search: SearchRequest,
+        callback: Callback<List<MangaListItemResponse>>
+    ) {
+        var genre: Int? = null
+
+        if (search.genre.isNotBlank()) {
+            genre = Genre.valueOf(search.genre.toString()).ordinal + 1
+        }
+
+        Log.d("Search: ", genre.toString())
+
+        if (search.searchQuery.isNotBlank() && !search.genre.isNullOrEmpty() && search.rating != 0.0) {
+            service.getMangas(token, search.searchQuery, genre!!, search.rating)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNotBlank() && search.genre.isNullOrEmpty() && search.rating != 0.0) {
+            service.getMangas(token, search.rating, search.searchQuery)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNullOrEmpty() && !search.genre.isNullOrEmpty() && search.rating != 0.0) {
+            service.getMangas(token, genre!!, search.rating)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNotBlank() && !search.genre.isNullOrEmpty() && search.rating == 0.0) {
+            service.getMangas(token, genre!!, search.searchQuery)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNotBlank() && search.genre.isNullOrEmpty() && search.rating == 0.0) {
+            service.getMangas(token, search.searchQuery)
+                .enqueue(callback)
+        } else if (search.searchQuery.isNullOrEmpty() && !search.genre.isNullOrEmpty() && search.rating == 0.0) {
+            service.getMangas(token, genre!!)
+                .enqueue(callback)
+        } else if (search.rating != 0.0) {
+            service.getMangas(token, search.rating)
+                .enqueue(callback)
+        } else {
+            service.getMangas(token)
+                .enqueue(callback)
+        }
+    }
 }

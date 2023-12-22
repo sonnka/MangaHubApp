@@ -8,6 +8,7 @@ import com.manga.mangahubapp.model.request.UpdateMangaRequest
 import com.manga.mangahubapp.model.request.UpdateUserRequest
 import com.manga.mangahubapp.model.request.UserRequest
 import com.manga.mangahubapp.model.response.ChapterListItemResponse
+import com.manga.mangahubapp.model.response.ChapterResponse
 import com.manga.mangahubapp.model.response.LoginResponse
 import com.manga.mangahubapp.model.response.MangaListItemResponse
 import com.manga.mangahubapp.model.response.MangaResponse
@@ -78,9 +79,9 @@ interface ApiRepository {
         callback: Callback<List<ChapterListItemResponse>>
     )
 
-//    fun getChapter(
-//        token: String,
-//        chapterId: String,
-//        callback: Callback<List<MangaListItemResponse>>
-//    )
+    fun getChapter(
+        token: String,
+        chapterId: String,
+        callback: Callback<ChapterResponse>
+    )
 }

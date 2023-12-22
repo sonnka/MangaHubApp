@@ -13,7 +13,7 @@ data class ChapterResponse(
     val scans: String?,
 
     @SerializedName("chapterNumber")
-    val chapterNumber: Integer,
+    val chapterNumber: Int,
 
     @SerializedName("createdOn")
     val createdOn: String?,

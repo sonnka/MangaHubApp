@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.util.Base64
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import com.github.barteksc.pdfviewer.PDFView
 import com.manga.mangahubapp.R
 import com.manga.mangahubapp.model.response.ChapterResponse
 import com.manga.mangahubapp.network.ApiRepositoryImpl
@@ -56,9 +58,11 @@ class ChapterInfo : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val dataList = response.body()
                     if (dataList != null) {
-                        //renderPdf(dataList.scans.toString())
-                        saveBase64PdfToStorage(dataList.scans.toString(), "scanned.pdf")
-                        displayPdfFromStorage(activity, "scanned.pdf")
+                        var title = findViewById<TextView>(R.id.titleChapter)
+                        title.setText(dataList.title)
+                        renderPdf(dataList.scans.toString())
+//                        saveBase64PdfToStorage(dataList.scans.toString(), "scanned.pdf")
+//                        displayPdfFromStorage(activity, "scanned.pdf")
                     } else {
                         Toast.makeText(activity, "Something went wrong!", Toast.LENGTH_LONG)
                             .show()
@@ -114,18 +118,11 @@ class ChapterInfo : AppCompatActivity() {
     }
 
     private fun renderPdf(base64EncodedString: String) {
-//        Log.d("Page", base64EncodedString)
-//        var avatar = findViewById<ImageView>(R.id.mypage)
-//        val imageBytes = Base64.decode(base64EncodedString, Base64.DEFAULT)
-//        val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-//        avatar!!.setImageBitmap(decodedImage)
-    }
 
-//    private fun showPdfFromUri(uri: Uri?) {
-//        pdfView.fromUri(uri)
-//            .defaultPage(0)
-//            .spacing(10)
-//            .load()
-//    }
+        val decodedBytes = Base64.decode(base64EncodedString, Base64.DEFAULT)
+        var pdfView = findViewById<PDFView>(R.id.pdfView)
+        pdfView.fromBytes(decodedBytes).load()
+
+    }
 
 }

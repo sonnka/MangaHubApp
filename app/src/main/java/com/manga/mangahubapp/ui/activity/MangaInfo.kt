@@ -1,18 +1,24 @@
 package com.manga.mangahubapp.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.manga.mangahubapp.R
 import com.manga.mangahubapp.model.enums.Genre
+import com.manga.mangahubapp.model.response.ChapterListItemResponse
 import com.manga.mangahubapp.model.response.MangaResponse
 import com.manga.mangahubapp.network.ApiRepositoryImpl
+import com.manga.mangahubapp.ui.adapters.ChapterAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +40,11 @@ class MangaInfo : AppCompatActivity() {
     private var deleteMangaButton: Button? = null
     private var avatar: ImageView? = null
 
+    private var chapterAdapter: ChapterAdapter? = null
+    private var recyclerView: RecyclerView? = null
+    private var chapterIds: ArrayList<String>? = ArrayList()
+    private var titles: ArrayList<String>? = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manga_info)
@@ -52,6 +63,8 @@ class MangaInfo : AppCompatActivity() {
         editMangaButton = findViewById(R.id.editMangaButton)
         deleteMangaButton = findViewById(R.id.deleteMangaButton)
 
+        recyclerView = findViewById(R.id.recycle_view2)
+
         avatar = findViewById(R.id.coverManga)
 
         editMangaButton.let { e ->
@@ -69,6 +82,63 @@ class MangaInfo : AppCompatActivity() {
         getManga()
     }
 
+    private fun setAdapterOnRecycleView() {
+        Log.d("adapter", "")
+        chapterAdapter = ChapterAdapter(this, chapterIds, titles)
+
+        recyclerView!!.adapter = chapterAdapter
+
+        recyclerView!!.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun clearRecycleView() {
+        chapterIds = ArrayList<String>()
+        titles = ArrayList<String>()
+    }
+
+    @SuppressLint("Range")
+    private fun fillData(dataList: List<ChapterListItemResponse>) {
+        if (dataList.size == 0) {
+            Toast.makeText(activity, "No chapters!", Toast.LENGTH_LONG).show()
+        } else {
+            for (item in dataList) {
+                Log.d("Response chapter: ", item.title.toString())
+                chapterIds!!.add(item.chapterId!!)
+                titles!!.add(item.title!!)
+            }
+        }
+    }
+
+    private fun getChapters() {
+        apiRepository.getChapters("Bearer " + token, mangaId!!, object :
+            Callback<List<ChapterListItemResponse>> {
+            override fun onResponse(
+                call: Call<List<ChapterListItemResponse>>,
+                response: Response<List<ChapterListItemResponse>>
+            ) {
+                if (response.isSuccessful) {
+                    val dataList = response.body()
+                    if (dataList != null) {
+                        clearRecycleView()
+                        setAdapterOnRecycleView()
+                        fillData(dataList)
+                        setAdapterOnRecycleView()
+                    } else {
+                        Toast.makeText(activity, "Something went wrong!", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                } else {
+                    Toast.makeText(activity, "Something went wrong!", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ChapterListItemResponse>>, t: Throwable) {
+                Toast.makeText(activity, "Something went wrong!", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
     private fun getManga() {
         apiRepository.getManga("Bearer " + token, mangaId!!, object :
             Callback<MangaResponse> {
@@ -80,6 +150,7 @@ class MangaInfo : AppCompatActivity() {
                     val manga = response.body()
                     if (manga != null) {
                         fillData(manga)
+                        getChapters()
                     } else {
                         Toast.makeText(activity, "Something went wrong!", Toast.LENGTH_LONG)
                             .show()

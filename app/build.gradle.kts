@@ -54,6 +54,9 @@ dependencies {
     implementation("com.fredporciuncula:phonemoji:1.5.2")
     //JWT
     implementation("com.auth0:java-jwt:3.18.1")
+    // PDF
+    implementation("com.github.barteksc:android-pdf-viewer:3.2.0-beta.1")
+    //   implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.1")
     // Tests
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

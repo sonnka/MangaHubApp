@@ -9,6 +9,7 @@ import com.manga.mangahubapp.model.request.SearchRequest
 import com.manga.mangahubapp.model.request.UpdateMangaRequest
 import com.manga.mangahubapp.model.request.UpdateUserRequest
 import com.manga.mangahubapp.model.request.UserRequest
+import com.manga.mangahubapp.model.response.ChapterListItemResponse
 import com.manga.mangahubapp.model.response.LoginResponse
 import com.manga.mangahubapp.model.response.MangaListItemResponse
 import com.manga.mangahubapp.model.response.MangaResponse
@@ -23,7 +24,7 @@ class ApiRepositoryImpl : ApiRepository {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://9753-46-98-183-16.ngrok-free.app/")
+        .baseUrl("https://db61-46-98-183-128.ngrok-free.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
@@ -103,5 +104,13 @@ class ApiRepositoryImpl : ApiRepository {
             service.getMangas(token)
                 .enqueue(callback)
         }
+    }
+
+    override fun getChapters(
+        token: String,
+        mangaId: String,
+        callback: Callback<List<ChapterListItemResponse>>
+    ) {
+        service.getChapters(token, mangaId).enqueue(callback)
     }
 }

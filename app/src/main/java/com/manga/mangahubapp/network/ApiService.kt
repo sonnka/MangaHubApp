@@ -6,6 +6,7 @@ import com.manga.mangahubapp.model.request.MangaRequest
 import com.manga.mangahubapp.model.request.UpdateMangaRequest
 import com.manga.mangahubapp.model.request.UpdateUserRequest
 import com.manga.mangahubapp.model.request.UserRequest
+import com.manga.mangahubapp.model.response.ChapterListItemResponse
 import com.manga.mangahubapp.model.response.LoginResponse
 import com.manga.mangahubapp.model.response.MangaListItemResponse
 import com.manga.mangahubapp.model.response.MangaResponse
@@ -122,5 +123,12 @@ interface ApiService {
     fun getMangas(
         @Header("Authorization") token: String
     ): Call<List<MangaListItemResponse>>
+
+
+    @GET("api/Chapters/get-manga-chapters")
+    fun getChapters(
+        @Header("Authorization") token: String,
+        @Query("mangaId") mangaId: String
+    ): Call<List<ChapterListItemResponse>>
 
 }

@@ -56,13 +56,14 @@
             android:name=".ui.activity.MangaInfo"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.ProfileEditPage"
-            android:exported="false" />
-        <activity
             android:name=".ui.activity.UpdateUser"
             android:exported="false" />
         <activity
             android:name=".ui.activity.UpdateManga"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.ChapterInfo"
             android:exported="false" />
 
         <meta-data
